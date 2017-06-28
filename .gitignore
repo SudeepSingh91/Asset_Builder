@@ -1,32 +1,27 @@
-# Prerequisites
-*.d
+# This file instructs git to ignore specific directories,
+# files, and file types
+# ("ignore" meaning that they won't be included
+# in the git repository)
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Explicitly temporary files
+/.vs
 
-# Precompiled Headers
-*.gch
-*.pch
+# Intellisense
+*.sdf
+*.opensdf
+/ipch
+*.VC.db
+*.VC.VC.opendb
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Generated files
+/temp
 
-# Fortran module files
-*.mod
-*.smod
+# Profiling
+*.psess
+*.vsp
+*.vspx
+*.sap
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Windows
+desktop.ini
+Thumbs.db
