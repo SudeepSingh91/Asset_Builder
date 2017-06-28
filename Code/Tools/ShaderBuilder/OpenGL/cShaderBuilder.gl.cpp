@@ -1,8 +1,4 @@
-// Header Files
-//=============
-
 #include "../cShaderBuilder.h"
-
 #include <cstdlib>
 #include <iostream>
 #include <regex>
@@ -14,9 +10,6 @@
 #include "../../../Engine/Platform/Platform.h"
 #include "../../../Engine/Windows/OpenGl.h"
 #include "../../../External/Mcpp/Includes.h"
-
-// Static Data Initialization
-//===========================
 
 namespace
 {
@@ -34,9 +27,6 @@ namespace
 	GlVendors::eGlVendor s_glVendor = GlVendors::Other;
 }
 
-// Helper Function Declarations
-//=============================
-
 namespace
 {
 	bool BuildAndVerifyGeneratedShaderSource( const char* const i_path_source, const char* const i_path_target,
@@ -44,8 +34,6 @@ namespace
 	bool PreProcessShaderSource( const char* const i_path_source, std::string& o_shaderSource_preProcessed );
 	bool SaveGeneratedShaderSource( const char* const i_path, const std::string& i_source );
 
-	// This helper struct exists to be able to dynamically allocate memory to get "log info"
-	// which will automatically be freed when the struct goes out of scope
 	struct sLogInfo
 	{
 		GLchar* memory;
@@ -53,12 +41,6 @@ namespace
 		~sLogInfo() { if ( memory ) free( memory ); }
 	};
 }
-
-// Interface
-//==========
-
-// Build
-//------
 
 bool eae6320::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eShaderType i_shaderType, const std::vector<std::string>& i_arguments )
 {
@@ -86,15 +68,11 @@ OnExit:
 	return !wereThereErrors;
 }
 
-// Helper Function Definitions
-//============================
-
 namespace
 {
 	bool BuildAndVerifyGeneratedShaderSource( const char* const i_path_source, const char* const i_path_target,
 		const eae6320::Graphics::ShaderTypes::eShaderType i_shaderType, const std::string& i_source )
 	{
-		// Load any required OpenGL extensions
 		{
 			std::string errorMessage;
 			if ( !eae6320::OpenGlExtensions::Load( &errorMessage ) )
@@ -106,7 +84,6 @@ namespace
 
 		bool wereThereErrors = false;
 
-		// Create a hidden OpenGL window
 		HINSTANCE hInstance = NULL;
 		eae6320::Windows::OpenGl::sHiddenWindowInfo hiddenWindowInfo;
 		{
@@ -118,7 +95,7 @@ namespace
 				goto OnExit;
 			}
 		}
-		// Determine which vendor makes the GPU
+		
 		{
 			const GLubyte* const glString = glGetString( GL_VENDOR );
 			const GLenum errorCode = glGetError();
@@ -155,7 +132,7 @@ namespace
 				goto OnExit;
 			}
 		}
-		// Verify that compiling shaders at run-time is supported
+		
 		{
 			GLboolean isShaderCompilingSupported;
 			glGetBooleanv( GL_SHADER_COMPILER, &isShaderCompilingSupported );
@@ -167,10 +144,8 @@ namespace
 			}
 		}
 
-		// Load the source code from file and set it into a shader
 		GLuint shaderId = 0;
 		{
-			// Get the platform-specific shader type
 			GLenum shaderType;
 			switch ( i_shaderType )
 			{
@@ -187,7 +162,7 @@ namespace
 				eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 				goto OnExit;
 			}
-			// Generate a shader
+			
 			shaderId = glCreateShader( shaderType );
 			{
 				const GLenum errorCode = glGetError();
@@ -207,7 +182,7 @@ namespace
 					goto OnExit;
 				}
 			}
-			// Set the source code into the shader
+			
 			{
 				const GLsizei shaderSourceCount = 1;
 				const GLchar* const shaderSource = reinterpret_cast<const GLchar*>( i_source.c_str() );
@@ -226,15 +201,11 @@ namespace
 			}
 		}
 
-		// Compile the shader source code
 		{
 			glCompileShader( shaderId );
 			GLenum errorCode = glGetError();
 			if ( errorCode == GL_NO_ERROR )
 			{
-				// Get compilation info
-				// (this won't be used unless compilation fails
-				// but it can be useful to look at when debugging)
 				std::string compilationInfo;
 				{
 					GLint infoSize;
@@ -270,7 +241,7 @@ namespace
 						goto OnExit;
 					}
 				}
-				// Check to see if there were compilation errors
+				
 				GLint didCompilationSucceed;
 				{
 					glGetShaderiv( shaderId, GL_COMPILE_STATUS, &didCompilationSucceed );
@@ -281,8 +252,6 @@ namespace
 						{
 							wereThereErrors = true;
 
-							// Convert the error messages into something that will be output in Visual Studio's Error window
-							// (and that will open the file when double-clicked)
 							if ( s_glVendor != GlVendors::Other )
 							{
 								try
@@ -304,17 +273,6 @@ namespace
 											break;
 										case GlVendors::AMD:
 											{
-												// The following code can be uncommented to try and debug AMD parsing on an NVIDIA machine
-												/*
-												{
-													std::string fakeAmd;
-													std::regex pattern_match( R"(^\s*0\s*\(\s*(\d+)\s*\)\s*:\s*(error|warning)\s*(\w+)\s*:)" );
-													const std::string pattern_replace = "ERROR: 0:$1: $2(#$3)";
-													fakeAmd = std::regex_replace( compilationInfo, pattern_match, pattern_replace );
-													compilationInfo = fakeAmd;
-												}
-												*/
-
 												pattern_match.assign( R"(^\s*\w+\s*:\s*0\s*:\s*(\d+)\s*:\s*(\w+)\s*\(\s*(\S+)\s*\))" );
 												{
 													std::ostringstream stringBuilder;
@@ -339,7 +297,6 @@ namespace
 								}
 								catch ( std::regex_error& )
 								{
-									// If the parsing code has an error pass the output directly from the driver
 									std::cerr << compilationInfo << "\n";
 								}
 							}
@@ -404,39 +361,28 @@ namespace
 	bool PreProcessShaderSource( const char* const i_path_source, std::string& o_shaderSource_preProcessed )
 	{
 		bool wereThereErrors = false;
-
-		// mcpp consumes non-const char*s
-		// and so an array of temporary strings must be allocated
 		const char* arguments_const [] =
 		{
-			// The command (necessary even though it is being run as a function)
 			"mcpp",
-			// The platform #define
 			"-DEAE6320_PLATFORM_GL",
 #ifdef EAE6320_GRAPHICS_AREDEBUGSHADERSENABLED
-			// Keep comments
 			"-C",
 #endif
-			// Don't output #line number information
 			"-P",
-			// Treat unknown directives (like #version and #extension) as warnings instead of errors
 			"-a",
-			// The input file to pre-process
 			i_path_source
 		};
 		const size_t argumentCount = sizeof( arguments_const ) / sizeof( char* );
 		char* arguments[argumentCount] = { NULL };
 		for ( size_t i = 0; i < argumentCount; ++i )
 		{
-			const size_t stringSize = strlen( arguments_const[i] ) + 1;	// NULL terminator
+			const size_t stringSize = strlen( arguments_const[i] ) + 1;	
 			char* temporaryString = reinterpret_cast<char*>( malloc( stringSize ) );
 			memcpy( temporaryString, arguments_const[i], stringSize );
 			arguments[i] = temporaryString;
 		}
 
-		// Configure mcpp to output to buffers instead of files
 		mcpp_use_mem_buffers( 1 );
-		// Preprocess the file
 		const int result = mcpp_lib_main( static_cast<int>( argumentCount ), arguments );
 		if ( result == 0 )
 		{
@@ -450,7 +396,6 @@ namespace
 		}
 
 #ifndef EAE6320_GRAPHICS_AREDEBUGSHADERSENABLED
-		// Remove extra new lines
 		try
 		{
 			std::regex pattern_match( R"(((\r\n)|(\n))+)" );
@@ -474,7 +419,6 @@ namespace
 			}
 		}
 
-		// Release mcpp's internal buffers
 		mcpp_use_mem_buffers( 0 );
 
 		return !wereThereErrors;

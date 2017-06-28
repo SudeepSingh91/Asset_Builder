@@ -1,20 +1,9 @@
-// Header Files
-//=============
-
 #include "cShaderBuilder.h"
-
 #include <sstream>
 #include "../AssetBuildLibrary/UtilityFunctions.h"
 
-// Inherited Implementation
-//=========================
-
-// Build
-//------
-
 bool eae6320::AssetBuild::cShaderBuilder::Build( const std::vector<std::string>& i_arguments )
 {
-	// Decide which kind of shader program to compile
 	Graphics::ShaderTypes::eShaderType shaderType = Graphics::ShaderTypes::Unknown;
 	{
 		if ( i_arguments.size() >= 1 )

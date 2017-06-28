@@ -14,8 +14,6 @@ namespace
 bool eae6320::AssetBuild::cEffectBuilder::Build(const std::vector<std::string>&)
 {
 	bool wereThereErrors = false;
-
-	// Copy the source to the target
 	{
 		std::string errorMessage;
 
@@ -33,8 +31,6 @@ namespace
 	bool LoadFile(const char* i_path, std::ofstream& i_binFile)
 	{
 		bool wereThereErrors = false;
-
-		// Create a new Lua state
 		lua_State* luaState = NULL;
 		{
 			luaState = luaL_newstate();
@@ -46,8 +42,6 @@ namespace
 			}
 		}
 
-		// Load the asset file as a "chunk",
-		// meaning there will be a callable function at the top of the stack
 		const int stackTopBeforeLoad = lua_gettop(luaState);
 		{
 			const int luaResult = luaL_loadfile(luaState, i_path);
@@ -55,30 +49,24 @@ namespace
 			{
 				wereThereErrors = true;
 				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
-				// Pop the error message
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
 		}
-		// Execute the "chunk", which should load the asset
-		// into a table at the top of the stack
 		{
 			const int argumentCount = 0;
-			const int returnValueCount = LUA_MULTRET;	// Return _everything_ that the file returns
+			const int returnValueCount = LUA_MULTRET;	
 			const int noMessageHandler = 0;
 			const int luaResult = lua_pcall(luaState, argumentCount, returnValueCount, noMessageHandler);
 			if (luaResult == LUA_OK)
 			{
-				// A well-behaved asset file will only return a single value
 				const int returnedValueCount = lua_gettop(luaState) - stackTopBeforeLoad;
 				if (returnedValueCount == 1)
 				{
-					// A correct asset file _must_ return a table
 					if (!lua_istable(luaState, -1))
 					{
 						wereThereErrors = true;
 						eae6320::AssetBuild::OutputErrorMessage("Asset files must return a table");
-						// Pop the returned non-table value
 						lua_pop(luaState, 1);
 						goto OnExit;
 					}
@@ -87,7 +75,6 @@ namespace
 				{
 					wereThereErrors = true;
 					eae6320::AssetBuild::OutputErrorMessage("Asset files must return a single table");
-					// Pop every value that was returned
 					lua_pop(luaState, returnedValueCount);
 					goto OnExit;
 				}
@@ -96,31 +83,22 @@ namespace
 			{
 				wereThereErrors = true;
 				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
-				// Pop the error message
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
 		}
 
-		// If this code is reached the asset file was loaded successfully,
-		// and its table is now at index -1
 		if (!LoadTableValues(*luaState, i_binFile))
 		{
 			wereThereErrors = true;
 		}
 
-
-		// Pop the table
 		lua_pop(luaState, 1);
 
 	OnExit:
 
 		if (luaState)
 		{
-			// If I haven't made any mistakes
-			// there shouldn't be anything on the stack,
-			// regardless of any errors encountered while loading the file:
-
 			lua_close(luaState);
 			luaState = NULL;
 		}
@@ -146,9 +124,7 @@ namespace
 		if (lua_type(&io_luaState, -1) != LUA_TSTRING)
 		{
 			eae6320::AssetBuild::OutputErrorMessage("The value for vertex shader path must be a string");
-			// Pop the value
 			lua_pop(&io_luaState, 1);
-			// (The asset table is now at -1)
 			return false;
 		}
 		{
@@ -185,9 +161,7 @@ namespace
 		if (lua_type(&io_luaState, -1) != LUA_TSTRING)
 		{
 			eae6320::AssetBuild::OutputErrorMessage("The value for fragment shader path must be a string");
-			// Pop the value
 			lua_pop(&io_luaState, 1);
-			// (The asset table is now at -1)
 			return false;
 		}
 		{
@@ -204,8 +178,6 @@ namespace
 			size++;
 
 			char* csize = reinterpret_cast<char*>(&size);
-
-			//i_binFile.write(csize, sizeof(uint16_t));
 			i_binFile.write(fragmentpath.c_str(), size);
 
 			lua_pop(&io_luaState, 1);
