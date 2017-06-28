@@ -1,0 +1,2 @@
+C:\Users\singh\singh_sudeep\Assets\materials/mat1.mes
+C:\Users\singh\singh_sudeep\temp\x86\Debug\game\data\materials/mat1.bin

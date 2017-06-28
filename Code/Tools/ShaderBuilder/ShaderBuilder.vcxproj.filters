@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cShaderBuilder.cpp" />
+    <ClCompile Include="EntryPoint.cpp" />
+    <ClCompile Include="Direct3D\cShaderBuilder.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\cShaderBuilder.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cShaderBuilder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Direct3D">
+      <UniqueIdentifier>{030b9805-5d9e-4ad9-9373-3d7430bbc0c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenGL">
+      <UniqueIdentifier>{b8d5d233-c8a7-4294-9c43-c45f457dd1c1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

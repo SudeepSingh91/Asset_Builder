@@ -1,0 +1,11 @@
+return
+{
+	vertexshaderpath = "Shaders/vertex.shader";
+	fragmentshaderpath = "Shaders/fragment.shader";
+	renderstates =
+	{
+		alphatransparency = true;
+		depthbuffering = true;
+		drawbothsides = true;
+	}
+}

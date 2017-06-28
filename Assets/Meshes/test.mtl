@@ -1,0 +1,78 @@
+newmtl COL_SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl ceiling_braceSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd railing_COLOR.dds
+bump railing_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks railing_SPEC.dds
+Ns 4.31
+newmtl ceiling_tile_12SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd cement_wall_COLOR.dds
+bump cement_wall_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks cement_wall_SPEC.dds
+Ns 4.31
+newmtl flag_1SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl floor_3x3_4SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd floor_COLOR.dds
+bump floor_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks floor_SPEC.dds
+Ns 4.31
+newmtl wall_2x5_1SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd cement_wall_COLOR.dds
+bump cement_wall_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks cement_wall_SPEC.dds
+Ns 4.31
+newmtl wall_vertical_brace_2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd metal_brace_COLOR.dds
+bump metal_brace_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks metal_brace_SPEC.dds
+Ns 4.31
+newmtl wall_window_SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd wall_COLOR.dds
+bump wall_NRM.dds -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks wall_SPEC.dds
+Ns 4.31

@@ -1,0 +1,9 @@
+return
+{
+	effectpath = "Shaders/baseeff1.effect",
+	texturepath = "Textures/car.jpg",
+	constantdata = 
+	{
+		color = {1.0, 1.0, 1.0},
+	},
+}

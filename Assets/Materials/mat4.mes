@@ -1,0 +1,9 @@
+return
+{
+	effectpath = "Shaders/baseeff2.effect",
+	texturepath = "Textures/eaeAlien.png",
+	constantdata = 
+	{
+		color = {1.0, 1.0, 1.0},
+	},
+}
