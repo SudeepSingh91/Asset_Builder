@@ -3,7 +3,7 @@
 #include "../../AssetBuildLibrary/UtilityFunctions.h"
 #include "../../../Engine/Platform/Platform.h"
 
-bool eae6320::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eShaderType i_shaderType, const std::vector<std::string>& i_arguments )
+bool Engine::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eShaderType i_shaderType, const std::vector<std::string>& i_arguments )
 {
 	std::string path_fxc;
 	{
@@ -40,8 +40,8 @@ bool eae6320::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eS
 			break;
 		}
 		commandToBuild << " /Emain"
-			<< " /DEAE6320_PLATFORM_D3D"
-#ifdef EAE6320_GRAPHICS_AREDEBUGSHADERSENABLED
+			<< " /DPLATFORM_D3D"
+#ifdef GRAPHICS_AREDEBUGSHADERSENABLED
 			<< " /Od"
 			<< " /Zi"
 #endif

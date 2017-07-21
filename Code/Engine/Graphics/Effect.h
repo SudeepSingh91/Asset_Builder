@@ -1,9 +1,9 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	#include <D3D11.h>
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 	#include "../Windows/OpenGl.h"
 	#include "../../External/OpenGlExtensions/OpenGlExtensions.h"
 #endif
@@ -13,7 +13,7 @@
 #include "../Platform/Platform.h"
 #include "cRenderState.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -33,12 +33,12 @@ namespace eae6320
 				void Set();
 
 			private:
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 				ID3D11VertexShader* s_vertexShader = NULL;
 				ID3D11PixelShader* s_fragmentShader = NULL;
 				ID3D11InputLayout* s_vertexLayout = NULL;
 
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 				GLuint s_programId = 0;
 
 #endif

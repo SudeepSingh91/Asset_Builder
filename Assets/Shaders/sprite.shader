@@ -4,7 +4,7 @@
 
 #include "../shaders.inc"
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 
 // Entry Point
 //============
@@ -41,7 +41,7 @@ void main(
 
 	)
 
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 
 // Input
 //======

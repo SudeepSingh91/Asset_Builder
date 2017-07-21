@@ -6,13 +6,13 @@
 	if you ever change to a new version.
 */
 
-#ifndef EAE6320_MCPPINCLUDES_H
-#define EAE6320_MCPPINCLUDES_H
+#ifndef MCPPINCLUDES_H
+#define MCPPINCLUDES_H
 
 // Windows and mcpp both define a global "OUT".
 // This is an example of why C++ namespaces are a good thing.
-#if defined( EAE6320_PLATFORM_WINDOWS ) && defined( OUT )
-	#define EAE6320_WINDOWS_OUT
+#if defined( PLATFORM_WINDOWS ) && defined( OUT )
+	#define WINDOWS_OUT
 	#undef OUT
 #endif
 
@@ -21,7 +21,7 @@ extern "C"
 	#include "2.7.2/src/mcpp_lib.h"
 }
 
-namespace eae6320
+namespace Engine
 {
 	namespace mcpp
 	{
@@ -37,9 +37,9 @@ namespace eae6320
 	}
 }
 
-#ifdef EAE6320_WINDOWS_OUT
+#ifdef WINDOWS_OUT
 	#define OUT
-	#undef EAE6320_WINDOWS_OUT
+	#undef WINDOWS_OUT
 #endif
 
-#endif	// EAE6320_MCPPINCLUDES_H
+#endif	

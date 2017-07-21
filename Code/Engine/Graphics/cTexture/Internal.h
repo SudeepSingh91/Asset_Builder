@@ -1,7 +1,7 @@
-#ifndef EAE6320_GRAPHICS_CTEXTURE_INTERNAL_H
-#define EAE6320_GRAPHICS_CTEXTURE_INTERNAL_H
+#ifndef GRAPHICS_CTEXTURE_INTERNAL_H
+#define GRAPHICS_CTEXTURE_INTERNAL_H
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{

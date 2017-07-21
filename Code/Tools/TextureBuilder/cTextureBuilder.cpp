@@ -15,7 +15,7 @@ namespace
 	bool WriteTextureToFile( const char *const i_path, const DirectX::ScratchImage &i_texture );
 }
 
-bool eae6320::AssetBuild::cTextureBuilder::Build( const std::vector<std::string>& )
+bool Engine::AssetBuild::cTextureBuilder::Build( const std::vector<std::string>& )
 {
 	bool wereThereErrors = false;
 
@@ -32,7 +32,7 @@ bool eae6320::AssetBuild::cTextureBuilder::Build( const std::vector<std::string>
 		else
 		{
 			wereThereErrors = true;
-			eae6320::AssetBuild::OutputErrorMessage( "DirextXTex couldn't be used because COM couldn't be initialized", m_path_source );
+			Engine::AssetBuild::OutputErrorMessage( "DirextXTex couldn't be used because COM couldn't be initialized", m_path_source );
 			goto OnExit;
 		}
 	}
@@ -78,7 +78,7 @@ namespace
 				io_sourceImageThatMayNotBeValidAfterThisCall.GetMetadata(), formatToDecompressTo, uncompressedImage );
 			if ( FAILED( result ) )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( "DirectXTex failed to uncompress source image", i_path );
+				Engine::AssetBuild::OutputErrorMessage( "DirectXTex failed to uncompress source image", i_path );
 				return false;
 			}
 		}
@@ -88,14 +88,14 @@ namespace
 		}
 		
 		DirectX::ScratchImage flippedImage;
-#if defined ( EAE6320_PLATFORM_GL )
+#if defined ( PLATFORM_GL )
 		{
 			const DWORD flipVertically = DirectX::TEX_FR_FLIP_VERTICAL;
 			const HRESULT result = DirectX::FlipRotate( uncompressedImage.GetImages(), uncompressedImage.GetImageCount(),
 				uncompressedImage.GetMetadata(), flipVertically, flippedImage );
 			if ( FAILED( result ) )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( "DirectXTex failed to flip the source image vertically", i_path );
+				Engine::AssetBuild::OutputErrorMessage( "DirectXTex failed to flip the source image vertically", i_path );
 				return false;
 			}
 		}
@@ -108,8 +108,8 @@ namespace
 			size_t targetWidth, targetHeight;
 			{
 				const size_t blockSize = 4;
-				targetWidth = eae6320::Math::RoundUpToMultiple_powerOf2(flippedMetadata.width, blockSize);
-				targetHeight = eae6320::Math::RoundUpToMultiple_powerOf2(flippedMetadata.height, blockSize);
+				targetWidth = Engine::Math::RoundUpToMultiple_powerOf2(flippedMetadata.width, blockSize);
+				targetHeight = Engine::Math::RoundUpToMultiple_powerOf2(flippedMetadata.height, blockSize);
 			}
 			if ( ( targetWidth != flippedMetadata.width ) || ( targetHeight != flippedMetadata.height ) )
 			{
@@ -139,7 +139,7 @@ namespace
 			}
 			if ( FAILED( result ) )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( "DirectXTex failed to generate MIP maps", i_path );
+				Engine::AssetBuild::OutputErrorMessage( "DirectXTex failed to generate MIP maps", i_path );
 				return false;
 			}
 		}
@@ -152,7 +152,7 @@ namespace
 				imageWithMipMaps.GetMetadata(), formatToCompressTo, useDefaultCompressionOptions, useDefaultThreshold, o_texture );
 			if ( FAILED( result ) )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( "DirectXTex failed to compress the texture", i_path );
+				Engine::AssetBuild::OutputErrorMessage( "DirectXTex failed to compress the texture", i_path );
 				return false;
 			}
 		}
@@ -177,7 +177,7 @@ namespace
 				result = DirectX::LoadFromDDSFile( path.c_str(), useDefaultBehavior, dontReturnMetadata, o_image );
 				if ( FAILED( result ) )
 				{
-					eae6320::AssetBuild::OutputErrorMessage( "DirectXTex couldn't load the DDS file", i_path );
+					Engine::AssetBuild::OutputErrorMessage( "DirectXTex couldn't load the DDS file", i_path );
 				}
 			}
 			else if ( extension == L"tga" )
@@ -185,7 +185,7 @@ namespace
 				result = DirectX::LoadFromTGAFile( path.c_str(), dontReturnMetadata, o_image );
 				if ( FAILED( result ) )
 				{
-					eae6320::AssetBuild::OutputErrorMessage( "DirectXTex couldn't load the TGA file", i_path );
+					Engine::AssetBuild::OutputErrorMessage( "DirectXTex couldn't load the TGA file", i_path );
 				}
 			}
 			else
@@ -196,7 +196,7 @@ namespace
 				result = DirectX::LoadFromWICFile( path.c_str(), useDefaultBehavior, dontReturnMetadata, o_image );
 				if ( FAILED( result ) )
 				{
-					eae6320::AssetBuild::OutputErrorMessage( "WIC couldn't load the source image", i_path );
+					Engine::AssetBuild::OutputErrorMessage( "WIC couldn't load the source image", i_path );
 				}
 			}
 		}
@@ -216,7 +216,7 @@ namespace
 		}
 		else
 		{
-			eae6320::AssetBuild::OutputErrorMessage( "DirectXTex failed to save the built texture to disk", i_path );
+			Engine::AssetBuild::OutputErrorMessage( "DirectXTex failed to save the built texture to disk", i_path );
 			return false;
 		}
 	}

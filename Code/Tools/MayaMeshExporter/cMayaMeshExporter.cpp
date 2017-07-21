@@ -140,7 +140,7 @@ namespace
 		const std::vector<sMaterialInfo>& i_materialInfo );
 }
 
-MStatus eae6320::cMayaMeshExporter::writer( const MFileObject& i_file, const MString& i_options, FileAccessMode i_mode )
+MStatus Engine::cMayaMeshExporter::writer( const MFileObject& i_file, const MString& i_options, FileAccessMode i_mode )
 {
 	MStatus status;
 	std::map<std::string, sVertexInfo> uniqueVertices;

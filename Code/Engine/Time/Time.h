@@ -1,7 +1,7 @@
-#ifndef EAE6320_TIME_H
-#define EAE6320_TIME_H
+#ifndef TIME_H
+#define TIME_H
 
-namespace eae6320
+namespace Engine
 {
 	namespace Time
 	{

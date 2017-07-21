@@ -1,7 +1,7 @@
-#ifndef EAE6320_CONTEXT_H
-#define EAE6320_CONTEXT_H
+#ifndef CONTEXT_H
+#define CONTEXT_H
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	#include <D3D11.h>
 #endif
 
@@ -13,10 +13,10 @@ public:
 	~Context();
 	static Context* GetContext();
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	ID3D11InputLayout* s_vertexLayout = NULL;
 	ID3D11Device* s_direct3dDevice = NULL;
-	eae6320::Platform::sDataFromFile* compiledVertexShader;
+	Engine::Platform::sDataFromFile* compiledVertexShader;
 	ID3D11DeviceContext* s_direct3dImmediateContext = NULL;
 
 #endif

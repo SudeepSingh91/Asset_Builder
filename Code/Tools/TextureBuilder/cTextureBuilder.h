@@ -1,9 +1,9 @@
-#ifndef EAE6320_CTEXTUREBUILDER_H
-#define EAE6320_CTEXTUREBUILDER_H
+#ifndef CTEXTUREBUILDER_H
+#define CTEXTUREBUILDER_H
 
 #include "../AssetBuildLibrary/cbBuilder.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

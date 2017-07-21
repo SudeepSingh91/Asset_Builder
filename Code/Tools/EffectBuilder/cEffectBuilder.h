@@ -1,10 +1,10 @@
-#ifndef EAE6320_CEFFECTBUILDER_H
-#define EAE6320_CEFFECTBUILDER_H
+#ifndef CEFFECTBUILDER_H
+#define CEFFECTBUILDER_H
 
 #include "../AssetBuildLibrary/cbBuilder.h"
 #include "../../External/Lua/Includes.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

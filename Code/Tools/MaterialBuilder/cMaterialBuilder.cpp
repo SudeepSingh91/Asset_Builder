@@ -27,7 +27,7 @@ namespace
 	};
 }
 
-bool eae6320::AssetBuild::cMaterialBuilder::Build(const std::vector<std::string>&)
+bool Engine::AssetBuild::cMaterialBuilder::Build(const std::vector<std::string>&)
 {
 	bool wereThereErrors = false;
 
@@ -55,7 +55,7 @@ namespace
 			if (!luaState)
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage("Failed to create a new Lua state");
+				Engine::AssetBuild::OutputErrorMessage("Failed to create a new Lua state");
 				goto OnExit;
 			}
 		}
@@ -66,7 +66,7 @@ namespace
 			if (luaResult != LUA_OK)
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
+				Engine::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
@@ -84,7 +84,7 @@ namespace
 					if (!lua_istable(luaState, -1))
 					{
 						wereThereErrors = true;
-						eae6320::AssetBuild::OutputErrorMessage("Asset files must return a table");
+						Engine::AssetBuild::OutputErrorMessage("Asset files must return a table");
 						lua_pop(luaState, 1);
 						goto OnExit;
 					}
@@ -92,7 +92,7 @@ namespace
 				else
 				{
 					wereThereErrors = true;
-					eae6320::AssetBuild::OutputErrorMessage("Asset files must return a single table");
+					Engine::AssetBuild::OutputErrorMessage("Asset files must return a single table");
 					lua_pop(luaState, returnedValueCount);
 					goto OnExit;
 				}
@@ -100,7 +100,7 @@ namespace
 			else
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
+				Engine::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
@@ -155,7 +155,7 @@ namespace
 				std::string texpath = "";
 				std::string errormsg = " ";
 
-				eae6320::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath(value, "textures", texpath, &errormsg);
+				Engine::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath(value, "textures", texpath, &errormsg);
 
 				texpath = "data/" + texpath + "\0";
 
@@ -177,13 +177,13 @@ namespace
 
 		if (lua_isnil(&io_luaState, -1))
 		{
-			eae6320::AssetBuild::OutputErrorMessage("No value for effect path");
+			Engine::AssetBuild::OutputErrorMessage("No value for effect path");
 			lua_pop(&io_luaState, 1);
 			return false;
 		}
 		if (lua_type(&io_luaState, -1) != LUA_TSTRING)
 		{
-			eae6320::AssetBuild::OutputErrorMessage("The value for effect path must be a string");
+			Engine::AssetBuild::OutputErrorMessage("The value for effect path must be a string");
 			lua_pop(&io_luaState, 1);
 			return false;
 		}
@@ -193,7 +193,7 @@ namespace
 			std::string effpath = "";
 			std::string errormsg = " ";
 
-			eae6320::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath(value, "effects", effpath, &errormsg);
+			Engine::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath(value, "effects", effpath, &errormsg);
 
 			effpath = "data/" + effpath + "\0";
 
@@ -243,7 +243,7 @@ namespace
 			else
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage("Could not find data for color");
+				Engine::AssetBuild::OutputErrorMessage("Could not find data for color");
 			}
 
 			lua_pop(&io_luaState, 1);
@@ -253,7 +253,7 @@ namespace
 			sMaterial* data = new sMaterial;
 			char* cdata = reinterpret_cast<char*>(data);
 			i_binFile.write(cdata, sizeof(sMaterial));
-			eae6320::AssetBuild::OutputErrorMessage("Calling default constructor");
+			Engine::AssetBuild::OutputErrorMessage("Calling default constructor");
 		}
 
 		lua_pop(&io_luaState, 1);

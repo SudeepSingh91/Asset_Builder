@@ -1,11 +1,11 @@
-#ifndef EAE6320_APPLICATION_CBAPPLICATION_H
-#define EAE6320_APPLICATION_CBAPPLICATION_H
+#ifndef APPLICATION_CBAPPLICATION_H
+#define APPLICATION_CBAPPLICATION_H
 
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 	#include "../Windows/Includes.h"
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -17,20 +17,20 @@ namespace eae6320
 	}
 }
 
-namespace eae6320
+namespace Engine
 {
 	namespace Application
 	{
 		template<class tApplication>
 		int Run(
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 			 const HINSTANCE i_thisInstanceOfTheApplication, const char* const i_commandLineArguments, const int i_initialWindowDisplayState
 #endif
 		)
 		{
 			tApplication::sEntryPointParameters entryPointParameters =
 			{
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 				i_thisInstanceOfTheApplication, i_commandLineArguments, i_initialWindowDisplayState
 #endif
 			};
@@ -43,7 +43,7 @@ namespace eae6320
 		public:
 			struct sEntryPointParameters
 			{
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 				const HINSTANCE applicationInstance;
 				const char* const commandLineArguments;
 				const int initialWindowDisplayState;
@@ -78,7 +78,7 @@ namespace eae6320
 				bool CleanUp_base();	
 				bool CleanUp_engine();	
 
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 			#include "Windows/cbApplication.win.h"
 #endif
 		};

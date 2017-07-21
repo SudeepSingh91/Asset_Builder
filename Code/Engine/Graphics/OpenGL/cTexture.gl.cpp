@@ -4,20 +4,20 @@
 #include "../../Asserts/Asserts.h"
 #include "../../Logging/Logging.h"
 
-void eae6320::Graphics::cTexture::Bind( const unsigned int i_id ) const
+void Engine::Graphics::cTexture::Bind( const unsigned int i_id ) const
 {
 	{
 		glActiveTexture( GL_TEXTURE0 + static_cast<GLint>( i_id ) );
-		EAE6320_ASSERT( glGetError() == GL_NO_ERROR );
+		ASSERT( glGetError() == GL_NO_ERROR );
 	}
 	{
-		EAE6320_ASSERT( m_textureId != 0 );
+		ASSERT( m_textureId != 0 );
 		glBindTexture( GL_TEXTURE_2D, m_textureId );
-		EAE6320_ASSERT( glGetError() == GL_NO_ERROR );
+		ASSERT( glGetError() == GL_NO_ERROR );
 	}
 }
 
-bool eae6320::Graphics::cTexture::CleanUp()
+bool Engine::Graphics::cTexture::CleanUp()
 {
 	bool wereThereErrors = false;
 
@@ -29,7 +29,7 @@ bool eae6320::Graphics::cTexture::CleanUp()
 		if ( errorCode != GL_NO_ERROR )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
+			ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
 			Logging::OutputError( "OpenGL failed to delete the texture: %s",
 				reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
 		}
@@ -39,7 +39,7 @@ bool eae6320::Graphics::cTexture::CleanUp()
 	return !wereThereErrors;
 }
 
-bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sDdsInfo& i_ddsInfo )
+bool Engine::Graphics::cTexture::Initialize( const char* const i_path, const sDdsInfo& i_ddsInfo )
 {
 	bool wereThereErrors = false;
 	{
@@ -55,8 +55,8 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 				if ( errorCode != GL_NO_ERROR )
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
-					eae6320::Logging::OutputError( "OpenGL failed to bind the new texture for %s: %s",
+					ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
+					Engine::Logging::OutputError( "OpenGL failed to bind the new texture for %s: %s",
 						i_path, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
 					goto OnExit;
 				}
@@ -64,16 +64,16 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 			else
 			{
 				bool wereThereErrors = true;
-				EAE6320_ASSERT( false );
-				eae6320::Logging::OutputError( "OpenGL failed to create a texture for %s", i_path );
+				ASSERT( false );
+				Engine::Logging::OutputError( "OpenGL failed to create a texture for %s", i_path );
 				goto OnExit;
 			}
 		}
 		else
 		{
 			bool wereThereErrors = true;
-			EAE6320_ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
-			eae6320::Logging::OutputError( "OpenGL failed to create a texture for %s: %s",
+			ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
+			Engine::Logging::OutputError( "OpenGL failed to create a texture for %s: %s",
 				i_path, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
 			goto OnExit;
 		}
@@ -112,7 +112,7 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF( false, "DDS file not big enough" );
+						ASSERTF( false, "DDS file not big enough" );
 						Logging::OutputError( "The DDS file %s isn't big enough to hold the data that its header claims to", i_path );
 						goto OnExit;
 					}
@@ -122,13 +122,13 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 			else
 			{
 				bool wereThereErrors = true;
-				EAE6320_ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
-				eae6320::Logging::OutputError( "OpenGL failed to copy the texture data from MIP level %u of %s: %s",
+				ASSERTF( false, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
+				Engine::Logging::OutputError( "OpenGL failed to copy the texture data from MIP level %u of %s: %s",
 					i, i_path, reinterpret_cast<const char*>( gluErrorString( errorCode ) ) );
 				goto OnExit;
 			}
 		}
-		EAE6320_ASSERTF( currentPosition == endOfFile, "The DDS file %s has more data than it should", i_path );
+		ASSERTF( currentPosition == endOfFile, "The DDS file %s has more data than it should", i_path );
 	}
 
 OnExit:
@@ -137,7 +137,7 @@ OnExit:
 	{
 		const GLsizei textureCount = 1;
 		glDeleteTextures( textureCount, &m_textureId );
-		EAE6320_ASSERT( glGetError == GL_NO_ERROR );
+		ASSERT( glGetError == GL_NO_ERROR );
 		m_textureId = 0;
 	}
 	

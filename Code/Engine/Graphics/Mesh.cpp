@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-namespace eae6320
+namespace Engine
 {
 	namespace Mesh
 	{

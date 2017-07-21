@@ -1,7 +1,7 @@
-#ifndef EAE6320_ASSETBUILD_H
-#define EAE6320_ASSETBUILD_H
+#ifndef ASSETBUILD_H
+#define ASSETBUILD_H
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

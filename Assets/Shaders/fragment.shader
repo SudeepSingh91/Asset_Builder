@@ -2,7 +2,7 @@
 	This is the fragment shader used to render meshes
 */
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 
 // Constants
 //==========
@@ -53,7 +53,7 @@ void main(
 	o_color = i_color * g_color * sampledColor;
 }
 
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 
 // The version of GLSL to use must come first
 #version 420

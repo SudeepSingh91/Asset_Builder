@@ -5,7 +5,7 @@
 #include "../Math/cQuaternion.h"
 #include "../Math/cMatrix_transformation.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Camera
 	{

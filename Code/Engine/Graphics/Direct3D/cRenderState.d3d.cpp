@@ -10,26 +10,26 @@ namespace
 	Context* myCont = Context::GetContext();
 }
 
-void eae6320::Graphics::cRenderState::Bind() const
+void Engine::Graphics::cRenderState::Bind() const
 {
 	{
-		EAE6320_ASSERT( m_blendState != NULL );
+		ASSERT( m_blendState != NULL );
 		const float* const noBlendFactor = NULL;
 		const unsigned int defaultSampleMask = 0xffffffff;
 		myCont->s_direct3dImmediateContext->OMSetBlendState( m_blendState, noBlendFactor, defaultSampleMask );
 	}
 	{
-		EAE6320_ASSERT( m_depthStencilState != NULL );
+		ASSERT( m_depthStencilState != NULL );
 		const unsigned int unusedStencilReference = 0;
 		myCont->s_direct3dImmediateContext->OMSetDepthStencilState( m_depthStencilState, unusedStencilReference );
 	}
 	{
-		EAE6320_ASSERT( m_rasterizerState != NULL );
+		ASSERT( m_rasterizerState != NULL );
 		myCont->s_direct3dImmediateContext->RSSetState( m_rasterizerState );
 	}
 }
 
-bool eae6320::Graphics::cRenderState::CleanUp()
+bool Engine::Graphics::cRenderState::CleanUp()
 {
 	if ( m_blendState )
 	{
@@ -50,7 +50,7 @@ bool eae6320::Graphics::cRenderState::CleanUp()
 	return true;
 }
 
-bool eae6320::Graphics::cRenderState::InitializeFromBits()
+bool Engine::Graphics::cRenderState::InitializeFromBits()
 {
 	bool wereThereErrors = false;
 	{
@@ -85,8 +85,8 @@ bool eae6320::Graphics::cRenderState::InitializeFromBits()
 		if ( FAILED( result ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "CreateBlendState() failed" );
-			eae6320::Logging::OutputError( "Direct3D failed to create a blend render state object from %u with HRESULT %#010x", m_bits, result );
+			ASSERTF( false, "CreateBlendState() failed" );
+			Engine::Logging::OutputError( "Direct3D failed to create a blend render state object from %u with HRESULT %#010x", m_bits, result );
 			goto OnExit;
 		}
 	}
@@ -117,8 +117,8 @@ bool eae6320::Graphics::cRenderState::InitializeFromBits()
 		if ( FAILED( result ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "CreateDepthStencilState() failed" );
-			eae6320::Logging::OutputError( "Direct3D failed to create a depth/stencil render state object from %u with HRESULT %#010x", m_bits, result );
+			ASSERTF( false, "CreateDepthStencilState() failed" );
+			Engine::Logging::OutputError( "Direct3D failed to create a depth/stencil render state object from %u with HRESULT %#010x", m_bits, result );
 			goto OnExit;
 		}
 	}
@@ -145,8 +145,8 @@ bool eae6320::Graphics::cRenderState::InitializeFromBits()
 		if ( FAILED( result ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "CreateRasterizerState() failed" );
-			eae6320::Logging::OutputError( "Direct3D failed to create a rasterizer render state object from %u with HRESULT %#010x", m_bits, result );
+			ASSERTF( false, "CreateRasterizerState() failed" );
+			Engine::Logging::OutputError( "Direct3D failed to create a rasterizer render state object from %u with HRESULT %#010x", m_bits, result );
 			goto OnExit;
 		}
 	}

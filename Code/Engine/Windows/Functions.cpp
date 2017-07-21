@@ -6,7 +6,7 @@
 #include <sstream>
 #include "../Asserts/Asserts.h"
 
-bool eae6320::Windows::CopyFile( const char* const i_path_source, const char* const i_path_target,
+bool Engine::Windows::CopyFile( const char* const i_path_source, const char* const i_path_target,
 	const bool i_shouldFunctionFailIfTargetAlreadyExists, const bool i_shouldTargetFileTimeBeModified,
 	std::string* const o_errorMessage )
 {
@@ -97,7 +97,7 @@ bool eae6320::Windows::CopyFile( const char* const i_path_source, const char* co
 	}
 }
 
-bool eae6320::Windows::CreateDirectoryIfNecessary( const std::string& i_path, std::string* const o_errorMessage )
+bool Engine::Windows::CreateDirectoryIfNecessary( const std::string& i_path, std::string* const o_errorMessage )
 {
 	std::string directory;
 	{
@@ -162,7 +162,7 @@ bool eae6320::Windows::CreateDirectoryIfNecessary( const std::string& i_path, st
 	}
 }
 
-bool eae6320::Windows::DoesFileExist( const char* const i_path, std::string* const o_errorMessage )
+bool Engine::Windows::DoesFileExist( const char* const i_path, std::string* const o_errorMessage )
 {
 	WIN32_FIND_DATA fileData;
 	HANDLE file = FindFirstFile( i_path, &fileData );
@@ -171,7 +171,7 @@ bool eae6320::Windows::DoesFileExist( const char* const i_path, std::string* con
 		if ( FindClose( file ) == FALSE )
 		{
 			const std::string windowsErrorMessage = GetLastSystemError();
-			EAE6320_ASSERTF( false, "Windows failed to close the file handle to \"%s\" after finding it: %s",
+			ASSERTF( false, "Windows failed to close the file handle to \"%s\" after finding it: %s",
 				i_path, windowsErrorMessage.c_str() );
 			if ( o_errorMessage )
 			{
@@ -186,7 +186,7 @@ bool eae6320::Windows::DoesFileExist( const char* const i_path, std::string* con
 	{
 		DWORD errorCode;
 		std::string errorMessage = GetLastSystemError( &errorCode );
-		EAE6320_ASSERTF( ( ( errorCode == ERROR_FILE_NOT_FOUND ) || ( errorCode == ERROR_PATH_NOT_FOUND ) ),
+		ASSERTF( ( ( errorCode == ERROR_FILE_NOT_FOUND ) || ( errorCode == ERROR_PATH_NOT_FOUND ) ),
 			"FindFirstFile() failed with the unexpected error code of %u: %s", errorCode, errorMessage.c_str() );
 		if ( o_errorMessage )
 		{
@@ -196,12 +196,12 @@ bool eae6320::Windows::DoesFileExist( const char* const i_path, std::string* con
 	}
 }
 
-bool eae6320::Windows::ExecuteCommand( const char* const i_command, DWORD* const o_exitCode, std::string* const o_errorMessage )
+bool Engine::Windows::ExecuteCommand( const char* const i_command, DWORD* const o_exitCode, std::string* const o_errorMessage )
 {
 	return ExecuteCommand( NULL, i_command, o_exitCode, o_errorMessage );
 }
 
-bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* const i_optionalArguments,
+bool Engine::Windows::ExecuteCommand( const char* const i_path, const char* const i_optionalArguments,
 	DWORD* const o_exitCode, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
@@ -247,7 +247,7 @@ bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* con
 						}
 						else
 						{
-							EAE6320_ASSERTF( false, "Expected a trailing quote but didn't find it" );
+							ASSERTF( false, "Expected a trailing quote but didn't find it" );
 							break;
 						}
 					}
@@ -273,7 +273,7 @@ bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* con
 			}
 			else
 			{
-				EAE6320_ASSERT( false );
+				ASSERT( false );
 				if ( o_errorMessage )
 				{
 					std::ostringstream errorMessage;
@@ -334,7 +334,7 @@ bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* con
 		{
 			wereThereErrors = true;
 			const std::string windowsErrorMessage = GetLastSystemError();
-			EAE6320_ASSERTF( false, "Windows failed to close the handle to the process \"%s\""
+			ASSERTF( false, "Windows failed to close the handle to the process \"%s\""
 				" after executing a command: %s", path.c_str(), windowsErrorMessage.c_str() );
 			if ( o_errorMessage )
 			{
@@ -348,7 +348,7 @@ bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* con
 		{
 			wereThereErrors = true;
 			const std::string windowsErrorMessage = GetLastSystemError();
-			EAE6320_ASSERTF( false, "Windows failed to close the handle to the process \"%s\" thread"
+			ASSERTF( false, "Windows failed to close the handle to the process \"%s\" thread"
 				" after executing a command: %s", path.c_str(), windowsErrorMessage.c_str() );
 			if ( o_errorMessage )
 			{
@@ -374,7 +374,7 @@ bool eae6320::Windows::ExecuteCommand( const char* const i_path, const char* con
 	}
 }
 
-bool eae6320::Windows::GetEnvironmentVariable( const char* const i_key, std::string& o_value, std::string* const o_errorMessage )
+bool Engine::Windows::GetEnvironmentVariable( const char* const i_key, std::string& o_value, std::string* const o_errorMessage )
 {
 	const DWORD maxCharacterCount = 128;
 	static char buffer[maxCharacterCount];
@@ -421,7 +421,7 @@ bool eae6320::Windows::GetEnvironmentVariable( const char* const i_key, std::str
 	}
 }
 
-std::string eae6320::Windows::GetFormattedSystemMessage( const DWORD i_code )
+std::string Engine::Windows::GetFormattedSystemMessage( const DWORD i_code )
 {
 	std::string errorMessage;
 	{
@@ -462,7 +462,7 @@ std::string eae6320::Windows::GetFormattedSystemMessage( const DWORD i_code )
 	return errorMessage;
 }
 
-std::string eae6320::Windows::GetLastSystemError( DWORD* const o_optionalErrorCode )
+std::string Engine::Windows::GetLastSystemError( DWORD* const o_optionalErrorCode )
 {
 	const DWORD errorCode = GetLastError();
 	if ( o_optionalErrorCode )
@@ -472,7 +472,7 @@ std::string eae6320::Windows::GetLastSystemError( DWORD* const o_optionalErrorCo
 	return GetFormattedSystemMessage( errorCode );
 }
 
-bool eae6320::Windows::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* const o_errorMessage )
+bool Engine::Windows::GetLastWriteTime( const char* const i_path, uint64_t& o_lastWriteTime, std::string* const o_errorMessage )
 {
 	ULARGE_INTEGER lastWriteTime;
 	{
@@ -507,7 +507,7 @@ bool eae6320::Windows::GetLastWriteTime( const char* const i_path, uint64_t& o_l
 	return true;
 }
 
-bool eae6320::Windows::InvalidateLastWriteTime( const char* const i_path, std::string* const o_errorMessage )
+bool Engine::Windows::InvalidateLastWriteTime( const char* const i_path, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
 
@@ -582,7 +582,7 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool eae6320::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& o_data, std::string* const o_errorMessage )
+bool Engine::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& o_data, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
 
@@ -601,7 +601,7 @@ bool eae6320::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& 
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "Windows failed to open the file \"" << i_path << "\" for reading: " << windowsError;
 				*o_errorMessage = errorMessage.str();
@@ -613,7 +613,7 @@ bool eae6320::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& 
 		LARGE_INTEGER fileSize_integer;
 		if ( GetFileSizeEx( fileHandle, &fileSize_integer ) != FALSE )
 		{
-			EAE6320_ASSERT( fileSize_integer.QuadPart <= SIZE_MAX );
+			ASSERT( fileSize_integer.QuadPart <= SIZE_MAX );
 			o_data.size = static_cast<size_t>( fileSize_integer.QuadPart );
 		}
 		else
@@ -621,7 +621,7 @@ bool eae6320::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& 
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "Windows failed to get the size of the file \"" << i_path << "\": " << windowsError;
 				*o_errorMessage = errorMessage.str();
@@ -634,14 +634,14 @@ bool eae6320::Windows::LoadBinaryFile( const char* const i_path, sDataFromFile& 
 	{
 		DWORD bytesReadCount;
 		OVERLAPPED* readSynchronously = NULL;
-		EAE6320_ASSERT( o_data.size < ( uint64_t( 1u ) << ( sizeof( bytesReadCount ) * 8 ) ) );
+		ASSERT( o_data.size < ( uint64_t( 1u ) << ( sizeof( bytesReadCount ) * 8 ) ) );
 		if ( ReadFile( fileHandle, o_data.data, static_cast<DWORD>( o_data.size ),
 			&bytesReadCount, readSynchronously ) == FALSE )
 		{
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "Windows failed to read the contents of the file \"" << i_path << "\": " << windowsError;
 				*o_errorMessage = errorMessage.str();
@@ -676,7 +676,7 @@ OnExit:
 		{
 			if ( !wereThereErrors && o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "\nWindows failed to close the file handle from \"" << i_path << "\": " << windowsError;
 				*o_errorMessage += errorMessage.str();
@@ -689,7 +689,7 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool eae6320::Windows::WriteBinaryFile( const char* const i_path, const void* const i_data, const size_t i_size, std::string* const o_errorMessage )
+bool Engine::Windows::WriteBinaryFile( const char* const i_path, const void* const i_data, const size_t i_size, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
 
@@ -708,7 +708,7 @@ bool eae6320::Windows::WriteBinaryFile( const char* const i_path, const void* co
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "Windows failed to open the file \"" << i_path << "\" for writing: " << windowsError;
 				*o_errorMessage = errorMessage.str();
@@ -718,7 +718,7 @@ bool eae6320::Windows::WriteBinaryFile( const char* const i_path, const void* co
 	}
 	{
 		OVERLAPPED* writeSynchronously = NULL;
-		EAE6320_ASSERT( i_size < ( uint64_t( 1 ) << ( sizeof( DWORD ) * 8 ) ) );
+		ASSERT( i_size < ( uint64_t( 1 ) << ( sizeof( DWORD ) * 8 ) ) );
 		const DWORD bytesToWriteCount = static_cast<DWORD>( i_size );
 		DWORD bytesWrittenCount;
 		if ( WriteFile( fileHandle, i_data, bytesToWriteCount, &bytesWrittenCount, writeSynchronously ) != FALSE )
@@ -740,7 +740,7 @@ bool eae6320::Windows::WriteBinaryFile( const char* const i_path, const void* co
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "Windows failed to write the file \"" << i_path << "\": " << windowsError;
 			}
@@ -756,7 +756,7 @@ OnExit:
 		{
 			if ( !wereThereErrors && o_errorMessage )
 			{
-				const std::string windowsError = eae6320::Windows::GetLastSystemError();
+				const std::string windowsError = Engine::Windows::GetLastSystemError();
 				std::ostringstream errorMessage;
 				errorMessage << "\nWindows failed to close the file handle from \"" << i_path << "\": " << windowsError;
 				*o_errorMessage += errorMessage.str();

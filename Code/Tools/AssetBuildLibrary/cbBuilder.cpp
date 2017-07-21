@@ -2,7 +2,7 @@
 #include <sstream>
 #include "UtilityFunctions.h"
 
-bool eae6320::AssetBuild::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arguments, const unsigned int i_argumentCount )
+bool Engine::AssetBuild::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arguments, const unsigned int i_argumentCount )
 {
 	const unsigned int commandCount = 1;
 	const unsigned int actualArgumentCount = i_argumentCount - commandCount;
@@ -36,12 +36,12 @@ bool eae6320::AssetBuild::cbBuilder::ParseCommandArgumentsAndBuild( char** i_arg
 		{
 			errorMessage << "only " << actualArgumentCount << " were provided\n";
 		}
-		eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str() );
+		Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str() );
 		return false;
 	}
 }
 
-eae6320::AssetBuild::cbBuilder::cbBuilder()
+Engine::AssetBuild::cbBuilder::cbBuilder()
 	:
 	m_path_source( NULL ), m_path_target( NULL )
 {

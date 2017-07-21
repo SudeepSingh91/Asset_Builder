@@ -1,13 +1,13 @@
-#ifndef EAE6320_GRAPHICS_CTEXTURE_H
-#define EAE6320_GRAPHICS_CTEXTURE_H
+#ifndef GRAPHICS_CTEXTURE_H
+#define GRAPHICS_CTEXTURE_H
 
 #include "Configuration.h"
 
-#ifdef EAE6320_PLATFORM_GL
+#ifdef PLATFORM_GL
 	#include "OpenGL/Includes.h"
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -24,11 +24,11 @@ namespace DirectX
 	struct DDS_HEADER;
 }
 
-#ifdef EAE6320_PLATFORM_D3D
+#ifdef PLATFORM_D3D
 	struct ID3D11ShaderResourceView;
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -44,9 +44,9 @@ namespace eae6320
 
 		private:
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 			ID3D11ShaderResourceView* m_textureView;
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 			GLuint m_textureId;
 #endif
 

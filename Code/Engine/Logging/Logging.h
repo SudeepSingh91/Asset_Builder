@@ -1,5 +1,5 @@
-#ifndef EAE6320_LOGGING_H
-#define EAE6320_LOGGING_H
+#ifndef LOGGING_H
+#define LOGGING_H
 
 #include "Configuration.h"
 
@@ -7,7 +7,7 @@
 	#define NULL 0
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Logging
 	{

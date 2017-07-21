@@ -1,11 +1,11 @@
-#ifndef EAE6320_USEROUTPUT_H
-#define EAE6320_USEROUTPUT_H
+#ifndef USEROUTPUT_H
+#define USEROUTPUT_H
 
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 	#include "../Windows/Includes.h"
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace UserOutput
 	{
@@ -13,7 +13,7 @@ namespace eae6320
 
 		struct sInitializationParameters
 		{
-#if defined( EAE6320_PLATFORM_WINDOWS )
+#if defined( PLATFORM_WINDOWS )
 			HWND mainWindow;
 #endif
 		};

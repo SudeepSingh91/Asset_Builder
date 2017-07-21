@@ -3,7 +3,7 @@
 #include "../../Asserts/Asserts.h"
 #include "../../Logging/Logging.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Mesh
 	{	
@@ -32,8 +32,8 @@ namespace eae6320
 			const HRESULT result = myCont->s_direct3dDevice->CreateBuffer(&bufferDescription, &initialData, &s_vertexBuffer);
 			if (FAILED(result))
 			{
-				EAE6320_ASSERT(false);
-				eae6320::Logging::OutputError("Direct3D failed to create the vertex buffer with HRESULT %#010x", result);
+				ASSERT(false);
+				Engine::Logging::OutputError("Direct3D failed to create the vertex buffer with HRESULT %#010x", result);
 				return false;
 			}
 
@@ -56,8 +56,8 @@ namespace eae6320
 			const HRESULT resultInd = myCont->s_direct3dDevice->CreateBuffer(&bufferDescriptionInd, &initialDataInd, &s_indexBuffer);
 			if (FAILED(resultInd))
 			{
-				EAE6320_ASSERT(false);
-				eae6320::Logging::OutputError("Direct3D failed to create the index buffer with HRESULT %#010x", result);
+				ASSERT(false);
+				Engine::Logging::OutputError("Direct3D failed to create the index buffer with HRESULT %#010x", result);
 				return false;
 			}
 
@@ -92,7 +92,7 @@ namespace eae6320
 				myCont->s_direct3dImmediateContext->IASetVertexBuffers(startingSlot, vertexBufferCount, &s_vertexBuffer, &bufferStride, &bufferOffset);
 			}
 			{
-				EAE6320_ASSERT(s_indexBuffer != NULL);
+				ASSERT(s_indexBuffer != NULL);
 				const DXGI_FORMAT format = DXGI_FORMAT_R16_UINT;
 				const unsigned int offset = 0;
 				myCont->s_direct3dImmediateContext->IASetIndexBuffer(s_indexBuffer, format, offset);

@@ -5,7 +5,7 @@
 #include "Effect.h"
 #include "cTexture.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{

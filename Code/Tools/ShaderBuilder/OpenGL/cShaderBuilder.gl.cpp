@@ -30,7 +30,7 @@ namespace
 namespace
 {
 	bool BuildAndVerifyGeneratedShaderSource( const char* const i_path_source, const char* const i_path_target,
-		const eae6320::Graphics::ShaderTypes::eShaderType i_shaderType, const std::string& i_source );
+		const Engine::Graphics::ShaderTypes::eShaderType i_shaderType, const std::string& i_source );
 	bool PreProcessShaderSource( const char* const i_path_source, std::string& o_shaderSource_preProcessed );
 	bool SaveGeneratedShaderSource( const char* const i_path, const std::string& i_source );
 
@@ -42,7 +42,7 @@ namespace
 	};
 }
 
-bool eae6320::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eShaderType i_shaderType, const std::vector<std::string>& i_arguments )
+bool Engine::AssetBuild::cShaderBuilder::Build( const Graphics::ShaderTypes::eShaderType i_shaderType, const std::vector<std::string>& i_arguments )
 {
 	bool wereThereErrors = false;
 
@@ -71,13 +71,13 @@ OnExit:
 namespace
 {
 	bool BuildAndVerifyGeneratedShaderSource( const char* const i_path_source, const char* const i_path_target,
-		const eae6320::Graphics::ShaderTypes::eShaderType i_shaderType, const std::string& i_source )
+		const Engine::Graphics::ShaderTypes::eShaderType i_shaderType, const std::string& i_source )
 	{
 		{
 			std::string errorMessage;
-			if ( !eae6320::OpenGlExtensions::Load( &errorMessage ) )
+			if ( !Engine::OpenGlExtensions::Load( &errorMessage ) )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
 				return false;
 			}
 		}
@@ -85,13 +85,13 @@ namespace
 		bool wereThereErrors = false;
 
 		HINSTANCE hInstance = NULL;
-		eae6320::Windows::OpenGl::sHiddenWindowInfo hiddenWindowInfo;
+		Engine::Windows::OpenGl::sHiddenWindowInfo hiddenWindowInfo;
 		{
 			std::string errorMessage;
-			if ( !eae6320::Windows::OpenGl::CreateHiddenContextWindow( hInstance, hiddenWindowInfo, &errorMessage ) )
+			if ( !Engine::Windows::OpenGl::CreateHiddenContextWindow( hInstance, hiddenWindowInfo, &errorMessage ) )
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
 				goto OnExit;
 			}
 		}
@@ -128,7 +128,7 @@ namespace
 				{
 					errorMessage << ": " << reinterpret_cast<const char*>( gluErrorString( errorCode ) );
 				}
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 				goto OnExit;
 			}
 		}
@@ -138,7 +138,7 @@ namespace
 			glGetBooleanv( GL_SHADER_COMPILER, &isShaderCompilingSupported );
 			if ( !isShaderCompilingSupported )
 			{
-				eae6320::AssetBuild::OutputErrorMessage( "Compiling shaders at run-time isn't supported on this implementation"
+				Engine::AssetBuild::OutputErrorMessage( "Compiling shaders at run-time isn't supported on this implementation"
 					" (this should never happen)", i_path_source );
 				return false;
 			}
@@ -149,17 +149,17 @@ namespace
 			GLenum shaderType;
 			switch ( i_shaderType )
 			{
-			case eae6320::Graphics::ShaderTypes::Vertex:
+			case Engine::Graphics::ShaderTypes::Vertex:
 				shaderType = GL_VERTEX_SHADER;
 				break;
-			case eae6320::Graphics::ShaderTypes::Fragment:
+			case Engine::Graphics::ShaderTypes::Fragment:
 				shaderType = GL_FRAGMENT_SHADER;
 				break;
 			default:
 				wereThereErrors = true;
 				std::ostringstream errorMessage;
 				errorMessage << "No OpenGL implementation exists for the platform-independent shader type " << i_shaderType;
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 				goto OnExit;
 			}
 			
@@ -172,13 +172,13 @@ namespace
 						std::ostringstream errorMessage;
 						errorMessage << "OpenGL failed to get an unused shader ID: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
+					Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 					goto OnExit;
 				}
 				else if ( shaderId == 0 )
 				{
 					wereThereErrors = true;
-					eae6320::AssetBuild::OutputErrorMessage( "OpenGL failed to get an unused shader ID", i_path_source );
+					Engine::AssetBuild::OutputErrorMessage( "OpenGL failed to get an unused shader ID", i_path_source );
 					goto OnExit;
 				}
 			}
@@ -195,7 +195,7 @@ namespace
 					std::ostringstream errorMessage;
 					errorMessage << "OpenGL failed to set the shader source code: " <<
 						reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-					eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
+					Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 					goto OnExit;
 				}
 			}
@@ -227,7 +227,7 @@ namespace
 							std::ostringstream errorMessage;
 							errorMessage << "OpenGL failed to get compilation info of the shader source code: " <<
 								reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-							eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
+							Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
 							goto OnExit;
 						}
 					}
@@ -237,7 +237,7 @@ namespace
 						std::ostringstream errorMessage;
 						errorMessage << "OpenGL failed to get the length of the shader compilation info: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
+						Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
 						goto OnExit;
 					}
 				}
@@ -313,7 +313,7 @@ namespace
 						std::ostringstream errorMessage;
 						errorMessage << "OpenGL failed to find out if compilation of the shader source code succeeded: " <<
 							reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-						eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
+						Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
 						goto OnExit;
 					}
 				}
@@ -324,7 +324,7 @@ namespace
 				std::ostringstream errorMessage;
 				errorMessage << "OpenGL failed to compile the shader source code: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_target );
 				goto OnExit;
 			}
 		}
@@ -341,17 +341,17 @@ namespace
 				std::ostringstream errorMessage;
 				errorMessage << "OpenGL failed to delete the shader source code: " <<
 					reinterpret_cast<const char*>( gluErrorString( errorCode ) );
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str(), i_path_source );
 			}
 			shaderId = 0;
 		}
 
 		{
 			std::string errorMessage;
-			if ( !eae6320::Windows::OpenGl::FreeHiddenContextWindow( hInstance, hiddenWindowInfo, &errorMessage ) )
+			if ( !Engine::Windows::OpenGl::FreeHiddenContextWindow( hInstance, hiddenWindowInfo, &errorMessage ) )
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
+				Engine::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path_source );
 			}
 		}
 
@@ -364,8 +364,8 @@ namespace
 		const char* arguments_const [] =
 		{
 			"mcpp",
-			"-DEAE6320_PLATFORM_GL",
-#ifdef EAE6320_GRAPHICS_AREDEBUGSHADERSENABLED
+			"-DPLATFORM_GL",
+#ifdef GRAPHICS_AREDEBUGSHADERSENABLED
 			"-C",
 #endif
 			"-P",
@@ -386,16 +386,16 @@ namespace
 		const int result = mcpp_lib_main( static_cast<int>( argumentCount ), arguments );
 		if ( result == 0 )
 		{
-			o_shaderSource_preProcessed = mcpp_get_mem_buffer( static_cast<OUTDEST>( eae6320::mcpp::OUTDEST::Out ) );
+			o_shaderSource_preProcessed = mcpp_get_mem_buffer( static_cast<OUTDEST>( Engine::mcpp::OUTDEST::Out ) );
 		}
 		else
 		{
 			wereThereErrors = true;
-			std::cerr << mcpp_get_mem_buffer( static_cast<OUTDEST>( eae6320::mcpp::OUTDEST::Err ) );
+			std::cerr << mcpp_get_mem_buffer( static_cast<OUTDEST>( Engine::mcpp::OUTDEST::Err ) );
 			goto OnExit;
 		}
 
-#ifndef EAE6320_GRAPHICS_AREDEBUGSHADERSENABLED
+#ifndef GRAPHICS_AREDEBUGSHADERSENABLED
 		try
 		{
 			std::regex pattern_match( R"(((\r\n)|(\n))+)" );
@@ -427,13 +427,13 @@ namespace
 	bool SaveGeneratedShaderSource( const char* const i_path, const std::string& i_shader )
 	{
 		std::string errorMessage;
-		if ( eae6320::Platform::WriteBinaryFile( i_path, i_shader.c_str(), i_shader.length(), &errorMessage ) )
+		if ( Engine::Platform::WriteBinaryFile( i_path, i_shader.c_str(), i_shader.length(), &errorMessage ) )
 		{
 			return true;
 		}
 		else
 		{
-			eae6320::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path );
+			Engine::AssetBuild::OutputErrorMessage( errorMessage.c_str(), i_path );
 			return false;
 		}
 	}

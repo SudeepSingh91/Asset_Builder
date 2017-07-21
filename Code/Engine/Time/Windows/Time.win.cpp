@@ -19,13 +19,13 @@ namespace
 	bool InitializeIfNecessary();
 }
 
-float eae6320::Time::GetElapsedSecondCount_total()
+float Engine::Time::GetElapsedSecondCount_total()
 {
 	InitializeIfNecessary();
 	return static_cast<float>( static_cast<double>( s_totalTicksElapsed_duringRun.QuadPart ) * s_secondsPerTick );
 }
 
-float eae6320::Time::GetElapsedSecondCount_duringPreviousFrame()
+float Engine::Time::GetElapsedSecondCount_duringPreviousFrame()
 {
 	InitializeIfNecessary();
 	return static_cast<float>(
@@ -33,7 +33,7 @@ float eae6320::Time::GetElapsedSecondCount_duringPreviousFrame()
 		* s_secondsPerTick );
 }
 
-void eae6320::Time::OnNewFrame()
+void Engine::Time::OnNewFrame()
 {
 	InitializeIfNecessary();
 
@@ -43,12 +43,12 @@ void eae6320::Time::OnNewFrame()
 	{
 		LARGE_INTEGER totalCountsElapsed;
 		const BOOL result = QueryPerformanceCounter( &totalCountsElapsed );
-		EAE6320_ASSERTF( result != FALSE, "QueryPerformanceCounter() failed" );
+		ASSERTF( result != FALSE, "QueryPerformanceCounter() failed" );
 		s_totalTicksElapsed_duringRun.QuadPart = totalCountsElapsed.QuadPart - s_totalTicksElapsed_atInitializion.QuadPart;
 	}
 }
 
-bool eae6320::Time::Initialize()
+bool Engine::Time::Initialize()
 {
 	bool wereThereErrors = false;
 
@@ -65,7 +65,7 @@ bool eae6320::Time::Initialize()
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERT( false );
+					ASSERT( false );
 					Logging::OutputMessage( "This hardware doesn't support high resolution performance counters!" );
 					goto OnExit;
 				}
@@ -74,7 +74,7 @@ bool eae6320::Time::Initialize()
 			{
 				wereThereErrors = true;
 				const std::string windowsErrorMessage = Windows::GetLastSystemError();
-				EAE6320_ASSERTF( false, windowsErrorMessage.c_str() );
+				ASSERTF( false, windowsErrorMessage.c_str() );
 				Logging::OutputMessage( "Windows failed to query performance frequency: %s", windowsErrorMessage.c_str() );
 				goto OnExit;
 			}
@@ -83,7 +83,7 @@ bool eae6320::Time::Initialize()
 		{
 			wereThereErrors = true;
 			const std::string windowsErrorMessage = Windows::GetLastSystemError();
-			EAE6320_ASSERTF( false, windowsErrorMessage.c_str() );
+			ASSERTF( false, windowsErrorMessage.c_str() );
 			Logging::OutputMessage( "Windows failed to query the performance counter: %s", windowsErrorMessage.c_str() );
 			goto OnExit;
 		}
@@ -93,7 +93,7 @@ bool eae6320::Time::Initialize()
 	}
 	else
 	{
-		EAE6320_ASSERTF( false, "Time has already been initialized" );
+		ASSERTF( false, "Time has already been initialized" );
 		goto OnExit;
 	}
 
@@ -102,7 +102,7 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool eae6320::Time::CleanUp()
+bool Engine::Time::CleanUp()
 {
 	return true;
 }
@@ -111,7 +111,7 @@ namespace
 {
 	bool InitializeIfNecessary()
 	{
-		EAE6320_ASSERTF( s_isInitialized, "Time being used but was never explicitly initialized" );
-		return s_isInitialized ? true : eae6320::Time::Initialize();
+		ASSERTF( s_isInitialized, "Time being used but was never explicitly initialized" );
+		return s_isInitialized ? true : Engine::Time::Initialize();
 	}
 }

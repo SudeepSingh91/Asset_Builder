@@ -28,7 +28,7 @@ namespace
 }
 
 
-bool eae6320::AssetBuild::cMeshBuilder::Build( const std::vector<std::string>& )
+bool Engine::AssetBuild::cMeshBuilder::Build( const std::vector<std::string>& )
 {
 	bool wereThereErrors = false;
 	{
@@ -55,7 +55,7 @@ namespace
 			if (!luaState)
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage("Failed to create a new Lua state");
+				Engine::AssetBuild::OutputErrorMessage("Failed to create a new Lua state");
 				goto OnExit;
 			}
 		}
@@ -66,7 +66,7 @@ namespace
 			if (luaResult != LUA_OK)
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
+				Engine::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
@@ -85,7 +85,7 @@ namespace
 					if (!lua_istable(luaState, -1))
 					{
 						wereThereErrors = true;
-						eae6320::AssetBuild::OutputErrorMessage("Asset files must return a table");
+						Engine::AssetBuild::OutputErrorMessage("Asset files must return a table");
 						lua_pop(luaState, 1);
 						goto OnExit;
 					}
@@ -93,7 +93,7 @@ namespace
 				else
 				{
 					wereThereErrors = true;
-					eae6320::AssetBuild::OutputErrorMessage("Asset files must return a single table");
+					Engine::AssetBuild::OutputErrorMessage("Asset files must return a single table");
 					lua_pop(luaState, returnedValueCount);
 					goto OnExit;
 				}
@@ -101,7 +101,7 @@ namespace
 			else
 			{
 				wereThereErrors = true;
-				eae6320::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
+				Engine::AssetBuild::OutputErrorMessage(lua_tostring(luaState, -1));
 				lua_pop(luaState, 1);
 				goto OnExit;
 			}
@@ -165,7 +165,7 @@ namespace
 		else
 		{
 			wereThereErrors = true;
-			eae6320::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
+			Engine::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
 			goto OnExit;
 		}
 
@@ -193,7 +193,7 @@ namespace
 		else
 		{
 			wereThereErrors = true;
-			eae6320::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
+			Engine::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
 			goto OnExit;
 		}
 
@@ -221,7 +221,7 @@ namespace
 		else
 		{
 			wereThereErrors = true;
-			eae6320::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
+			Engine::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
 			goto OnExit;
 		}
 
@@ -291,7 +291,7 @@ namespace
 			lua_gettable(&io_luaState, -2);
 			if (lua_istable(&io_luaState, -1))
 			{
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 				lua_pushinteger(&io_luaState, 1);
 				lua_gettable(&io_luaState, -2);
 				vertexbuffer[i - 1].u = static_cast<float>(lua_tonumber(&io_luaState, -1));
@@ -302,7 +302,7 @@ namespace
 				vertexbuffer[i - 1].v = static_cast<float>(lua_tonumber(&io_luaState, -1));
 				vertexbuffer[i - 1].v -= 1.0f;
 				lua_pop(&io_luaState, 1);
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 				lua_pushinteger(&io_luaState, 1);
 				lua_gettable(&io_luaState, -2);
 				vertexbuffer[i - 1].u = static_cast<float>(lua_tonumber(&io_luaState, -1));
@@ -330,7 +330,7 @@ namespace
 
 		uint16_t* indexbuffer = new uint16_t[indiceCount];
 		int j = 0;
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 		for (int i = indiceCount; i >= 1; --i)
 		{
 			lua_pushinteger(&io_luaState, i);
@@ -338,7 +338,7 @@ namespace
 			indexbuffer[indiceCount - i] = static_cast<uint16_t>(lua_tonumber(&io_luaState, -1));
 			lua_pop(&io_luaState, 1);
 		}
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 		for (int i = 1; i <= indiceCount; ++i)
 		{
 			lua_pushinteger(&io_luaState, i);
@@ -371,7 +371,7 @@ namespace
 		else
 		{
 			wereThereErrors = true;
-			eae6320::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
+			Engine::AssetBuild::OutputErrorMessage("The value at %d must be a table ", key);
 			goto OnExit;
 		}
 

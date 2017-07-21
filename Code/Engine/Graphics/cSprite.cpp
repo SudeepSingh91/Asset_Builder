@@ -1,6 +1,6 @@
 #include "cSprite.h"
 
-eae6320::Graphics::cSprite::cSprite( const float i_position_left, const float i_position_right, const float i_position_top, const float i_position_bottom,
+Engine::Graphics::cSprite::cSprite( const float i_position_left, const float i_position_right, const float i_position_top, const float i_position_bottom,
 	const float i_texcoord_left, const float i_texcoord_right, const float i_texcoord_top, const float i_texcoord_bottom )
 {
 	m_position_screen.left = i_position_left;

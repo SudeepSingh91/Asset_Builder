@@ -1,33 +1,21 @@
-// Header Files
-//=============
-
 #include "../UserInput.h"
 
 #include "../../Windows/Includes.h"
-
-// Helper Function Declarations
-//=============================
 
 namespace
 {
 	bool IsVirtualKeyPressed( const int i_virtualKeyCode );
 }
 
-// Interface
-//==========
-
-bool eae6320::UserInput::IsKeyPressed( const int i_virtualKeyCode )
+bool Engine::UserInput::IsKeyPressed( const int i_virtualKeyCode )
 {
 	return IsVirtualKeyPressed( i_virtualKeyCode );
 }
 
-bool eae6320::UserInput::IsMouseButtonPressed( const int i_virtualButtonCode )
+bool Engine::UserInput::IsMouseButtonPressed( const int i_virtualButtonCode )
 {
 	return IsVirtualKeyPressed( i_virtualButtonCode );
 }
-
-// Helper Function Definitions
-//============================
 
 namespace
 {

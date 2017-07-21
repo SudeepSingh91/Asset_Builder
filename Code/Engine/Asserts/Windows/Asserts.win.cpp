@@ -2,9 +2,9 @@
 
 #include "../../Windows/Includes.h"
 
-#ifdef EAE6320_ASSERTS_AREENABLED
+#ifdef ASSERTS_AREENABLED
 
-bool eae6320::Asserts::ShowMessageAndReturnWhetherToBreak( std::ostringstream& io_message, bool& io_shouldThisAssertBeIgnoredInTheFuture )
+bool Engine::Asserts::ShowMessageAndReturnWhetherToBreak( std::ostringstream& io_message, bool& io_shouldThisAssertBeIgnoredInTheFuture )
 {
 	io_message << "\n\n"
 		"Do you want to break into the debugger?"

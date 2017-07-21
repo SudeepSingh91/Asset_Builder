@@ -1,5 +1,5 @@
-#ifndef EAE6320_WINDOWS_FUNCTIONS_H
-#define EAE6320_WINDOWS_FUNCTIONS_H
+#ifndef WINDOWS_FUNCTIONS_H
+#define WINDOWS_FUNCTIONS_H
 
 #include "Includes.h"
 
@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace eae6320
+namespace Engine
 {
 	namespace Windows
 	{

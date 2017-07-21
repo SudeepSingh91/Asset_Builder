@@ -1,9 +1,9 @@
-#ifndef EAE6320_ASSETBUILD_UTILITYFUNCTIONS_H
-#define EAE6320_ASSETBUILD_UTILITYFUNCTIONS_H
+#ifndef ASSETBUILD_UTILITYFUNCTIONS_H
+#define ASSETBUILD_UTILITYFUNCTIONS_H
 
 #include <string>
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

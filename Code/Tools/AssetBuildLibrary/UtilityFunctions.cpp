@@ -4,7 +4,7 @@
 #include "../../Engine/Platform/Platform.h"
 #include "../../External/Lua/Includes.h"
 
-bool eae6320::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath( const char* const i_sourceRelativePath, const char* const i_assetType,
+bool Engine::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath( const char* const i_sourceRelativePath, const char* const i_assetType,
 	std::string& o_builtRelativePath, std::string* const o_errorMessage )
 {
 	const char* const functionKey = "ConvertSourceRelativePathToBuiltRelativePath";
@@ -148,7 +148,7 @@ bool eae6320::AssetBuild::ConvertSourceRelativePathToBuiltRelativePath( const ch
 	return !wereThereErrors;
 }
 
-bool eae6320::AssetBuild::GetAssetBuildSystemPath( std::string& o_path, std::string* const o_errorMessage )
+bool Engine::AssetBuild::GetAssetBuildSystemPath( std::string& o_path, std::string* const o_errorMessage )
 {
 	std::string scriptDir;
 	if ( Platform::GetEnvironmentVariable( "ScriptDir", scriptDir, o_errorMessage ) )
@@ -162,7 +162,7 @@ bool eae6320::AssetBuild::GetAssetBuildSystemPath( std::string& o_path, std::str
 	}
 }
 
-void eae6320::AssetBuild::OutputErrorMessage( const char* const i_errorMessage, const char* const i_optionalFileName )
+void Engine::AssetBuild::OutputErrorMessage( const char* const i_errorMessage, const char* const i_optionalFileName )
 {
 	std::cerr << ( i_optionalFileName ? i_optionalFileName : "Asset Build" ) << ": error: " <<
 		i_errorMessage << "\n";

@@ -7,7 +7,7 @@ int main( int i_argumentCount, char** i_arguments )
 {
 	bool wereThereErrors = false;
 
-	if ( !eae6320::AssetBuild::Initialize() )
+	if ( !Engine::AssetBuild::Initialize() )
 	{
 		wereThereErrors = true;
 		goto OnExit;
@@ -16,7 +16,7 @@ int main( int i_argumentCount, char** i_arguments )
 	if ( i_argumentCount == 2 )
 	{
 		const char* const path_assetsToBuild = i_arguments[1];
-		if ( !eae6320::AssetBuild::BuildAssets( path_assetsToBuild ) )
+		if ( !Engine::AssetBuild::BuildAssets( path_assetsToBuild ) )
 		{
 			wereThereErrors = true;
 			goto OnExit;
@@ -27,12 +27,12 @@ int main( int i_argumentCount, char** i_arguments )
 		std::stringstream errorMessage;
 		errorMessage << "AssetBuildSystem.exe must be run with a single command line argument which is the path to the list of assets to build"
 			" (the invalid argument count being passed to main is " << i_argumentCount << ")";
-		eae6320::AssetBuild::OutputErrorMessage( errorMessage.str().c_str() );
+		Engine::AssetBuild::OutputErrorMessage( errorMessage.str().c_str() );
 	}
 
 OnExit:
 
-	if ( !eae6320::AssetBuild::CleanUp() )
+	if ( !Engine::AssetBuild::CleanUp() )
 	{
 		wereThereErrors = true;
 	}

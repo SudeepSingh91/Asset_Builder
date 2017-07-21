@@ -3,7 +3,7 @@
 #include "../../Logging/Logging.h"
 #include "../../../External/Lua/Includes.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Mesh
 	{
@@ -24,8 +24,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to bind the vertex array: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to bind the vertex array: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -33,8 +33,8 @@ namespace eae6320
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to get an unused vertex array ID: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to get an unused vertex array ID: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -51,8 +51,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to bind the vertex buffer: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to bind the vertex buffer: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -60,8 +60,8 @@ namespace eae6320
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to get an unused vertex buffer ID: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to get an unused vertex buffer ID: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -75,8 +75,8 @@ namespace eae6320
 				if (errorCode != GL_NO_ERROR)
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to allocate the vertex buffer: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to allocate the vertex buffer: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -98,8 +98,8 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
 								vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -107,8 +107,8 @@ namespace eae6320
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
 							vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -127,8 +127,8 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
 								vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -136,8 +136,8 @@ namespace eae6320
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
 							vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -156,8 +156,8 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to enable the POSITION vertex attribute at location %u: %s",
 								vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -165,8 +165,8 @@ namespace eae6320
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to set the POSITION vertex attribute at location %u: %s",
 							vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -184,8 +184,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to bind the index buffer: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to bind the index buffer: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -193,8 +193,8 @@ namespace eae6320
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to get an unused index buffer ID: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to get an unused index buffer ID: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -209,8 +209,8 @@ namespace eae6320
 				if (errorCode != GL_NO_ERROR)
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to allocate the index buffer: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to allocate the index buffer: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -226,15 +226,15 @@ namespace eae6320
 				{
 					if (vertexBufferId != 0)
 					{
-#ifndef EAE6320_GRAPHICS_ISDEVICEDEBUGINFOENABLED
+#ifndef GRAPHICS_ISDEVICEDEBUGINFOENABLED
 						const GLsizei bufferCount = 1;
 						glDeleteBuffers(bufferCount, &vertexBufferId);
 						const GLenum errorCode = glGetError();
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to vertex buffer: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to vertex buffer: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -245,15 +245,15 @@ namespace eae6320
 					}
 					if (indexBufferId != 0)
 					{
-#ifndef EAE6320_GRAPHICS_ISDEVICEDEBUGINFOENABLED
+#ifndef GRAPHICS_ISDEVICEDEBUGINFOENABLED
 						const GLsizei bufferCount = 1;
 						glDeleteBuffers(bufferCount, &indexBufferId);
 						const GLenum errorCode = glGetError();
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to index buffer: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to index buffer: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -266,8 +266,8 @@ namespace eae6320
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to unbind the vertex array: %s",
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					Engine::Logging::OutputError("OpenGL failed to unbind the vertex array: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -280,7 +280,7 @@ namespace eae6320
 		{
 			bool wereThereErrors = false;
 			
-#ifdef EAE6320_GRAPHICS_ISDEVICEDEBUGINFOENABLED
+#ifdef GRAPHICS_ISDEVICEDEBUGINFOENABLED
 			if (s_vertexBufferId != 0)
 			{
 				const GLsizei bufferCount = 1;
@@ -289,7 +289,7 @@ namespace eae6320
 				if (errorCode != GL_NO_ERROR)
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					Logging::OutputError("OpenGL failed to delete the vertex buffer: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 				}
@@ -303,7 +303,7 @@ namespace eae6320
 				if (errorCode != GL_NO_ERROR)
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					Logging::OutputError("OpenGL failed to delete the index buffer: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 				}
@@ -319,7 +319,7 @@ namespace eae6320
 				if (errorCode != GL_NO_ERROR)
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					Logging::OutputError("OpenGL failed to delete the vertex array: %s",
 						reinterpret_cast<const char*>(gluErrorString(errorCode)));
 				}
@@ -332,14 +332,14 @@ namespace eae6320
 		{
 			{
 				glBindVertexArray(s_vertexArrayId);
-				EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+				ASSERT(glGetError() == GL_NO_ERROR);
 			}
 			{
 				const GLenum mode = GL_TRIANGLES;
 				const GLenum indexType = GL_UNSIGNED_SHORT;
 				const GLvoid* const offset = 0;
 				glDrawElements(mode, s_numIndices, indexType, offset);
-				EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+				ASSERT(glGetError() == GL_NO_ERROR);
 			}
 		}
 	}

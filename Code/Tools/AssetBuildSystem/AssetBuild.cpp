@@ -23,7 +23,7 @@ namespace
 	int luaOutputErrorMessage( lua_State* io_luaState );
 }
 
-bool eae6320::AssetBuild::BuildAssets( const char* const i_path_assetsToBuild )
+bool Engine::AssetBuild::BuildAssets( const char* const i_path_assetsToBuild )
 {
 	{
 		std::string path;
@@ -74,7 +74,7 @@ bool eae6320::AssetBuild::BuildAssets( const char* const i_path_assetsToBuild )
 	return true;
 }
 
-bool eae6320::AssetBuild::Initialize()
+bool Engine::AssetBuild::Initialize()
 {
 	{
 		s_luaState = luaL_newstate();
@@ -99,13 +99,13 @@ bool eae6320::AssetBuild::Initialize()
 	return true;
 }
 
-bool eae6320::AssetBuild::CleanUp()
+bool Engine::AssetBuild::CleanUp()
 {
 	bool wereThereErrors = false;
 
 	if ( s_luaState )
 	{
-		EAE6320_ASSERT( lua_gettop( s_luaState ) == 0 );
+		ASSERT( lua_gettop( s_luaState ) == 0 );
 		lua_close( s_luaState );
 		s_luaState = NULL;
 	}
@@ -144,7 +144,7 @@ namespace
 			std::string errorMessage;
 			const bool noErrorIfTargetAlreadyExists = false;
 			const bool updateTheTargetFileTime = true;
-			if ( eae6320::Platform::CopyFile( i_path_source, i_path_target, noErrorIfTargetAlreadyExists, updateTheTargetFileTime, &errorMessage ) )
+			if ( Engine::Platform::CopyFile( i_path_source, i_path_target, noErrorIfTargetAlreadyExists, updateTheTargetFileTime, &errorMessage ) )
 			{
 				lua_pushboolean( io_luaState, true );
 				const int returnValueCount = 1;
@@ -175,7 +175,7 @@ namespace
 		}
 
 		std::string errorMessage;
-		if ( eae6320::Platform::CreateDirectoryIfNecessary( i_path, &errorMessage ) )
+		if ( Engine::Platform::CreateDirectoryIfNecessary( i_path, &errorMessage ) )
 		{
 			const int returnValueCount = 0;
 			return returnValueCount;
@@ -201,7 +201,7 @@ namespace
 		}
 
 		std::string errorMessage;
-		if ( eae6320::Platform::DoesFileExist( i_path, &errorMessage ) )
+		if ( Engine::Platform::DoesFileExist( i_path, &errorMessage ) )
 		{
 			lua_pushboolean( io_luaState, true );
 			const int returnValueCount = 1;
@@ -232,7 +232,7 @@ namespace
 
 		int exitCode;
 		std::string errorMessage;
-		if ( eae6320::Platform::ExecuteCommand( i_command, &exitCode, &errorMessage ) )
+		if ( Engine::Platform::ExecuteCommand( i_command, &exitCode, &errorMessage ) )
 		{
 			lua_pushboolean( io_luaState, true );
 			lua_pushinteger( io_luaState, exitCode );
@@ -264,7 +264,7 @@ namespace
 
 		std::string value;
 		std::string errorMessage;
-		if ( eae6320::Platform::GetEnvironmentVariable( i_key, value, &errorMessage ) )
+		if ( Engine::Platform::GetEnvironmentVariable( i_key, value, &errorMessage ) )
 		{
 			lua_pushstring( io_luaState, value.c_str() );
 			const int returnValueCount = 1;
@@ -294,7 +294,7 @@ namespace
 		}
 		uint64_t lastWriteTime;
 		std::string errorMessage;
-		if ( eae6320::Platform::GetLastWriteTime( i_path, lastWriteTime, &errorMessage ) )
+		if ( Engine::Platform::GetLastWriteTime( i_path, lastWriteTime, &errorMessage ) )
 		{
 			lua_pushnumber( io_luaState, static_cast<lua_Number>( lastWriteTime ) );
 			const int returnValueCount = 1;
@@ -321,7 +321,7 @@ namespace
 		}
 
 		std::string errorMessage;
-		if ( eae6320::Platform::InvalidateLastWriteTime( i_path, &errorMessage ) )
+		if ( Engine::Platform::InvalidateLastWriteTime( i_path, &errorMessage ) )
 		{
 			const int returnValueCount = 0;
 			return returnValueCount;
@@ -360,7 +360,7 @@ namespace
 			}
 		}
 
-		eae6320::AssetBuild::OutputErrorMessage( i_errorMessage, i_optionalFileName );
+		Engine::AssetBuild::OutputErrorMessage( i_errorMessage, i_optionalFileName );
 
 		const int returnValueCount = 0;
 		return returnValueCount;

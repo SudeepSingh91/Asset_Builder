@@ -1,19 +1,19 @@
-#ifndef EAE6320_MESH_H
-#define EAE6320_MESH_H
+#ifndef MESH_H
+#define MESH_H
 
 #include "Configuration.h"
 #include "../Platform/Platform.h"
 
 #include <cstdint>
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	#include <D3D11.h>
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 	#include "../Windows/OpenGl.h"
 	#include "../../External/OpenGlExtensions/OpenGlExtensions.h"
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Mesh
 	{
@@ -40,14 +40,14 @@ namespace eae6320
 			sVertex* vertexArray;
 			uint16_t* indiceArray;
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 			ID3D11Buffer* s_vertexBuffer = NULL;
 			ID3D11Buffer* s_indexBuffer = NULL;
 
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 			GLuint s_vertexArrayId = 0;
 
-#ifdef EAE6320_GRAPHICS_ISDEVICEDEBUGINFOENABLED
+#ifdef GRAPHICS_ISDEVICEDEBUGINFOENABLED
 			GLuint s_vertexBufferId = 0;
 			GLuint s_indexBufferId = 0;
 #endif

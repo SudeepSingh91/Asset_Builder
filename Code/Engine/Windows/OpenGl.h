@@ -1,10 +1,10 @@
-#ifndef EAE6320_WINDOWS_OPENGL_H
-#define EAE6320_WINDOWS_OPENGL_H
+#ifndef WINDOWS_OPENGL_H
+#define WINDOWS_OPENGL_H
 
 #include "Includes.h"
 #include <string>
 
-namespace eae6320
+namespace Engine
 {
 	namespace Windows
 	{

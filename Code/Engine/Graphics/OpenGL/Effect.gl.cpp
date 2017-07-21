@@ -10,7 +10,7 @@ namespace
 	};
 }
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -23,7 +23,7 @@ namespace eae6320
 
 					if (!Platform::LoadBinaryFile(i_filepath, s_Filedata))
 					{
-						eae6320::Logging::OutputError("OpenGL failed to load file");
+						Engine::Logging::OutputError("OpenGL failed to load file");
 						return false;
 					}
 					
@@ -37,15 +37,15 @@ namespace eae6320
 					const GLenum errorCode = glGetError();
 					if (errorCode != GL_NO_ERROR)
 					{
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to create a program: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to create a program: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						return false;
 					}
 					else if (s_programId == 0)
 					{
-						EAE6320_ASSERT(false);
-						eae6320::Logging::OutputError("OpenGL failed to create a program");
+						ASSERT(false);
+						Engine::Logging::OutputError("OpenGL failed to create a program");
 						return false;
 					}
 
@@ -53,12 +53,12 @@ namespace eae6320
 				}
 				if (!LoadVertexShader())
 				{
-					EAE6320_ASSERT(false);
+					ASSERT(false);
 					return false;
 				}
 				if (!LoadFragmentShader())
 				{
-					EAE6320_ASSERT(false);
+					ASSERT(false);
 					return false;
 				}
 				{
@@ -83,16 +83,16 @@ namespace eae6320
 								}
 								else
 								{
-									EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-									eae6320::Logging::OutputError("OpenGL failed to get link info of the program: %s",
+									ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+									Engine::Logging::OutputError("OpenGL failed to get link info of the program: %s",
 										reinterpret_cast<const char*>(gluErrorString(errorCode)));
 									return false;
 								}
 							}
 							else
 							{
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to get the length of the program link info: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to get the length of the program link info: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								return false;
 							}
@@ -105,16 +105,16 @@ namespace eae6320
 							{
 								if (didLinkingSucceed == GL_FALSE)
 								{
-									EAE6320_ASSERTF(false, linkInfo.c_str());
-									eae6320::Logging::OutputError("The program failed to link: %s",
+									ASSERTF(false, linkInfo.c_str());
+									Engine::Logging::OutputError("The program failed to link: %s",
 										linkInfo.c_str());
 									return false;
 								}
 							}
 							else
 							{
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to find out if linking of the program succeeded: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to find out if linking of the program succeeded: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								return false;
 							}
@@ -122,8 +122,8 @@ namespace eae6320
 					}
 					else
 					{
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to link the program: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to link the program: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						return false;
 					}
@@ -143,7 +143,7 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						Logging::OutputError("OpenGL failed to delete the program: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					}
@@ -156,7 +156,7 @@ namespace eae6320
 			void Effect::Set()
 			{
 				glUseProgram(s_programId);
-				EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+				ASSERT(glGetError() == GL_NO_ERROR);
 
 				s_renderState.Bind();
 			}
@@ -174,15 +174,15 @@ namespace eae6320
 
 				bool wereThereErrors = false;
 				GLuint fragmentShaderId = 0;
-				eae6320::Platform::sDataFromFile dataFromFile;
+				Engine::Platform::sDataFromFile dataFromFile;
 				{
 					{
 						std::string errorMessage;
-						if (!eae6320::Platform::LoadBinaryFile(fragmentshaderpath, dataFromFile, &errorMessage))
+						if (!Engine::Platform::LoadBinaryFile(fragmentshaderpath, dataFromFile, &errorMessage))
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, errorMessage.c_str());
-							eae6320::Logging::OutputError("Failed to load the fragment shader \"%s\": %s",
+							ASSERTF(false, errorMessage.c_str());
+							Engine::Logging::OutputError("Failed to load the fragment shader \"%s\": %s",
 								fragmentshaderpath, errorMessage.c_str());
 							goto OnExit;
 						}
@@ -193,16 +193,16 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to get an unused fragment shader ID: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to get an unused fragment shader ID: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
 						else if (fragmentShaderId == 0)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERT(false);
-							eae6320::Logging::OutputError("OpenGL failed to get an unused fragment shader ID");
+							ASSERT(false);
+							Engine::Logging::OutputError("OpenGL failed to get an unused fragment shader ID");
 							goto OnExit;
 						}
 					}
@@ -214,8 +214,8 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to set the fragment shader source code: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to set the fragment shader source code: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -244,8 +244,8 @@ namespace eae6320
 								else
 								{
 									wereThereErrors = true;
-									EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-									eae6320::Logging::OutputError("OpenGL failed to get compilation info about the fragment shader source code: %s",
+									ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+									Engine::Logging::OutputError("OpenGL failed to get compilation info about the fragment shader source code: %s",
 										reinterpret_cast<const char*>(gluErrorString(errorCode)));
 									goto OnExit;
 								}
@@ -253,8 +253,8 @@ namespace eae6320
 							else
 							{
 								wereThereErrors = true;
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to get the length of the fragment shader compilation info: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to get the length of the fragment shader compilation info: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								goto OnExit;
 							}
@@ -268,8 +268,8 @@ namespace eae6320
 								if (didCompilationSucceed == GL_FALSE)
 								{
 									wereThereErrors = true;
-									EAE6320_ASSERTF(false, compilationInfo.c_str());
-									eae6320::Logging::OutputError("OpenGL failed to compile the fragment shader: %s",
+									ASSERTF(false, compilationInfo.c_str());
+									Engine::Logging::OutputError("OpenGL failed to compile the fragment shader: %s",
 										compilationInfo.c_str());
 									goto OnExit;
 								}
@@ -277,8 +277,8 @@ namespace eae6320
 							else
 							{
 								wereThereErrors = true;
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to find if compilation of the fragment shader source code succeeded: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to find if compilation of the fragment shader source code succeeded: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								goto OnExit;
 							}
@@ -287,8 +287,8 @@ namespace eae6320
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to compile the fragment shader source code: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to compile the fragment shader source code: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -299,8 +299,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to attach the fragment to the program: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to attach the fragment to the program: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -315,8 +315,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to delete the fragment shader ID %u: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to delete the fragment shader ID %u: %s",
 							fragmentShaderId, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					}
 					fragmentShaderId = 0;
@@ -339,15 +339,15 @@ namespace eae6320
 
 				bool wereThereErrors = false;
 				GLuint vertexShaderId = 0;
-				eae6320::Platform::sDataFromFile dataFromFile;
+				Engine::Platform::sDataFromFile dataFromFile;
 				{
 					{
 						std::string errorMessage;
-						if (!eae6320::Platform::LoadBinaryFile(vertexshaderpath, dataFromFile, &errorMessage))
+						if (!Engine::Platform::LoadBinaryFile(vertexshaderpath, dataFromFile, &errorMessage))
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, errorMessage.c_str());
-							eae6320::Logging::OutputError("Failed to load the vertex shader \"%s\": %s",
+							ASSERTF(false, errorMessage.c_str());
+							Engine::Logging::OutputError("Failed to load the vertex shader \"%s\": %s",
 								vertexshaderpath, errorMessage.c_str());
 							goto OnExit;
 						}
@@ -358,16 +358,16 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to get an unused vertex shader ID: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to get an unused vertex shader ID: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
 						else if (vertexShaderId == 0)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERT(false);
-							eae6320::Logging::OutputError("OpenGL failed to get an unused vertex shader ID");
+							ASSERT(false);
+							Engine::Logging::OutputError("OpenGL failed to get an unused vertex shader ID");
 							goto OnExit;
 						}
 					}
@@ -379,8 +379,8 @@ namespace eae6320
 						if (errorCode != GL_NO_ERROR)
 						{
 							wereThereErrors = true;
-							EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-							eae6320::Logging::OutputError("OpenGL failed to set the vertex shader source code: %s",
+							ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+							Engine::Logging::OutputError("OpenGL failed to set the vertex shader source code: %s",
 								reinterpret_cast<const char*>(gluErrorString(errorCode)));
 							goto OnExit;
 						}
@@ -409,8 +409,8 @@ namespace eae6320
 								else
 								{
 									wereThereErrors = true;
-									EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-									eae6320::Logging::OutputError("OpenGL failed to get compilation info about the vertex shader source code: %s",
+									ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+									Engine::Logging::OutputError("OpenGL failed to get compilation info about the vertex shader source code: %s",
 										reinterpret_cast<const char*>(gluErrorString(errorCode)));
 									goto OnExit;
 								}
@@ -418,8 +418,8 @@ namespace eae6320
 							else
 							{
 								wereThereErrors = true;
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to get the length of the vertex shader compilation info: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to get the length of the vertex shader compilation info: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								goto OnExit;
 							}
@@ -433,8 +433,8 @@ namespace eae6320
 								if (didCompilationSucceed == GL_FALSE)
 								{
 									wereThereErrors = true;
-									EAE6320_ASSERTF(false, compilationInfo.c_str());
-									eae6320::Logging::OutputError("OpenGL failed to compile the vertex shader: %s",
+									ASSERTF(false, compilationInfo.c_str());
+									Engine::Logging::OutputError("OpenGL failed to compile the vertex shader: %s",
 										compilationInfo.c_str());
 									goto OnExit;
 								}
@@ -442,8 +442,8 @@ namespace eae6320
 							else
 							{
 								wereThereErrors = true;
-								EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-								eae6320::Logging::OutputError("OpenGL failed to find if compilation of the vertex shader source code succeeded: %s",
+								ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+								Engine::Logging::OutputError("OpenGL failed to find if compilation of the vertex shader source code succeeded: %s",
 									reinterpret_cast<const char*>(gluErrorString(errorCode)));
 								goto OnExit;
 							}
@@ -452,8 +452,8 @@ namespace eae6320
 					else
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to compile the vertex shader source code: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to compile the vertex shader source code: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -464,8 +464,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to attach the vertex to the program: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to attach the vertex to the program: %s",
 							reinterpret_cast<const char*>(gluErrorString(errorCode)));
 						goto OnExit;
 					}
@@ -480,8 +480,8 @@ namespace eae6320
 					if (errorCode != GL_NO_ERROR)
 					{
 						wereThereErrors = true;
-						EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-						eae6320::Logging::OutputError("OpenGL failed to delete the vertex shader ID %u: %s",
+						ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+						Engine::Logging::OutputError("OpenGL failed to delete the vertex shader ID %u: %s",
 							vertexShaderId, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					}
 					vertexShaderId = 0;

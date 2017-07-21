@@ -1,71 +1,60 @@
-// Header Files
-//=============
-
 #include "cMatrix_transformation.h"
 
 #include <cmath>
 #include "cQuaternion.h"
 #include "cVector.h"
 
-// Interface
-//==========
-
-eae6320::Math::cMatrix_transformation eae6320::Math::cMatrix_transformation::CreateWorldToCameraTransform(
-	const cQuaternion& i_cameraOrientation, const cVector& i_cameraPosition )
+Engine::Math::cMatrix_transformation Engine::Math::cMatrix_transformation::CreateWorldToCameraTransform(
+	const cQuaternion& i_cameraOrientation, const cVector& i_cameraPosition)
 {
-	cMatrix_transformation transform_viewToWorld( i_cameraOrientation, i_cameraPosition );
-	// A camera can only ever have rotation and translation
-	// and so a lot of simplifying assumptions can be made in order to create the inverse
+	cMatrix_transformation transform_viewToWorld(i_cameraOrientation, i_cameraPosition);
 	return cMatrix_transformation(
 		transform_viewToWorld.m_00, transform_viewToWorld.m_01, transform_viewToWorld.m_02,
-			-( transform_viewToWorld.m_30 * transform_viewToWorld.m_00 ) - ( transform_viewToWorld.m_31 * transform_viewToWorld.m_01 ) - ( transform_viewToWorld.m_32 * transform_viewToWorld.m_02 ),
+		-(transform_viewToWorld.m_30 * transform_viewToWorld.m_00) - (transform_viewToWorld.m_31 * transform_viewToWorld.m_01) - (transform_viewToWorld.m_32 * transform_viewToWorld.m_02),
 		transform_viewToWorld.m_10, transform_viewToWorld.m_11, transform_viewToWorld.m_12,
-			-( transform_viewToWorld.m_30 * transform_viewToWorld.m_10 ) - ( transform_viewToWorld.m_31 * transform_viewToWorld.m_11 ) - ( transform_viewToWorld.m_32 * transform_viewToWorld.m_12 ),
+		-(transform_viewToWorld.m_30 * transform_viewToWorld.m_10) - (transform_viewToWorld.m_31 * transform_viewToWorld.m_11) - (transform_viewToWorld.m_32 * transform_viewToWorld.m_12),
 		transform_viewToWorld.m_20, transform_viewToWorld.m_21, transform_viewToWorld.m_22,
-			-( transform_viewToWorld.m_30 * transform_viewToWorld.m_20 ) - ( transform_viewToWorld.m_31 * transform_viewToWorld.m_21 ) - ( transform_viewToWorld.m_32 * transform_viewToWorld.m_22 ),
-		0.0f, 0.0f, 0.0f, 1.0f );
+		-(transform_viewToWorld.m_30 * transform_viewToWorld.m_20) - (transform_viewToWorld.m_31 * transform_viewToWorld.m_21) - (transform_viewToWorld.m_32 * transform_viewToWorld.m_22),
+		0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-eae6320::Math::cMatrix_transformation eae6320::Math::cMatrix_transformation::CreateCameraToProjectedTransform(
+Engine::Math::cMatrix_transformation Engine::Math::cMatrix_transformation::CreateCameraToProjectedTransform(
 	const float i_fieldOfView_y, const float i_aspectRatio,
-	const float i_z_nearPlane, const float i_z_farPlane )
+	const float i_z_nearPlane, const float i_z_farPlane)
 {
-	const float yScale = 1.0f / std::tan( i_fieldOfView_y * 0.5f );
+	const float yScale = 1.0f / std::tan(i_fieldOfView_y * 0.5f);
 	const float xScale = yScale / i_aspectRatio;
-#if defined( EAE6320_PLATFORM_D3D )
-	const float zDistanceScale = i_z_farPlane / ( i_z_nearPlane - i_z_farPlane );
+#if defined( PLATFORM_D3D )
+	const float zDistanceScale = i_z_farPlane / (i_z_nearPlane - i_z_farPlane);
 	return cMatrix_transformation(
 		xScale, 0.0f, 0.0f, 0.0f,
 		0.0f, yScale, 0.0f, 0.0f,
 		0.0f, 0.0f, zDistanceScale, i_z_nearPlane * zDistanceScale,
-		0.0f, 0.0f, -1.0f, 0.0f );
-#elif defined( EAE6320_PLATFORM_GL )
-	const float zDistanceScale = 1.0f / ( i_z_nearPlane - i_z_farPlane );
+		0.0f, 0.0f, -1.0f, 0.0f);
+#elif defined( PLATFORM_GL )
+	const float zDistanceScale = 1.0f / (i_z_nearPlane - i_z_farPlane);
 	return cMatrix_transformation(
 		xScale, 0.0f, 0.0f, 0.0f,
 		0.0f, yScale, 0.0f, 0.0f,
-		0.0f, 0.0f, ( i_z_nearPlane + i_z_farPlane ) * zDistanceScale, ( 2.0f * i_z_nearPlane * i_z_farPlane ) * zDistanceScale,
-		0.0f, 0.0f, -1.0f, 0.0f );
+		0.0f, 0.0f, (i_z_nearPlane + i_z_farPlane) * zDistanceScale, (2.0f * i_z_nearPlane * i_z_farPlane) * zDistanceScale,
+		0.0f, 0.0f, -1.0f, 0.0f);
 #endif
 }
 
-// Initialization / Shut Down
-//---------------------------
-
-eae6320::Math::cMatrix_transformation::cMatrix_transformation()
+Engine::Math::cMatrix_transformation::cMatrix_transformation()
 	:
-	m_00( 1.0f ), m_10( 0.0f ), m_20( 0.0f ), m_30( 0.0f ),
-	m_01( 0.0f ), m_11( 1.0f ), m_21( 0.0f ), m_31( 0.0f ),
-	m_02( 0.0f ), m_12( 0.0f ), m_22( 1.0f ), m_32( 0.0f ),
-	m_03( 0.0f ), m_13( 0.0f ), m_23( 0.0f ), m_33( 1.0f )
+	m_00(1.0f), m_10(0.0f), m_20(0.0f), m_30(0.0f),
+	m_01(0.0f), m_11(1.0f), m_21(0.0f), m_31(0.0f),
+	m_02(0.0f), m_12(0.0f), m_22(1.0f), m_32(0.0f),
+	m_03(0.0f), m_13(0.0f), m_23(0.0f), m_33(1.0f)
 {
 
 }
 
-eae6320::Math::cMatrix_transformation::cMatrix_transformation( const cQuaternion& i_rotation, const cVector& i_translation )
+Engine::Math::cMatrix_transformation::cMatrix_transformation(const cQuaternion& i_rotation, const cVector& i_translation)
 	:
-	m_30( i_translation.x ), m_31( i_translation.y ), m_32( i_translation.z ),
-	m_03( 0.0f ), m_13( 0.0f ), m_23( 0.0f ), m_33( 1.0f )
+	m_30(i_translation.x()), m_31(i_translation.y()), m_32(i_translation.z()),
+	m_03(0.0f), m_13(0.0f), m_23(0.0f), m_33(1.0f)
 {
 	const float _2x = i_rotation.m_x + i_rotation.m_x;
 	const float _2y = i_rotation.m_y + i_rotation.m_y;
@@ -93,22 +82,16 @@ eae6320::Math::cMatrix_transformation::cMatrix_transformation( const cQuaternion
 	m_22 = 1.0f - _2xx - _2yy;
 }
 
-// Implementation
-//===============
-
-// Initialization / Shut Down
-//---------------------------
-
-eae6320::Math::cMatrix_transformation::cMatrix_transformation(
+Engine::Math::cMatrix_transformation::cMatrix_transformation(
 	const float i_00, const float i_10, const float i_20, const float i_30,
 	const float i_01, const float i_11, const float i_21, const float i_31,
 	const float i_02, const float i_12, const float i_22, const float i_32,
-	const float i_03, const float i_13, const float i_23, const float i_33 )
+	const float i_03, const float i_13, const float i_23, const float i_33)
 	:
-	m_00( i_00 ), m_10( i_10 ), m_20( i_20 ), m_30( i_30 ),
-	m_01( i_01 ), m_11( i_11 ), m_21( i_21 ), m_31( i_31 ),
-	m_02( i_02 ), m_12( i_12 ), m_22( i_22 ), m_32( i_32 ),
-	m_03( i_03 ), m_13( i_13 ), m_23( i_23 ), m_33( i_33 )
+	m_00(i_00), m_10(i_10), m_20(i_20), m_30(i_30),
+	m_01(i_01), m_11(i_11), m_21(i_21), m_31(i_31),
+	m_02(i_02), m_12(i_12), m_22(i_22), m_32(i_32),
+	m_03(i_03), m_13(i_13), m_23(i_23), m_33(i_33)
 {
 
 }

@@ -11,7 +11,7 @@ namespace
 {
 	bool CreateMainWindow( const HINSTANCE i_thisInstanceOfTheApplication, const char* const i_windowName, const ATOM i_windowClass,
 		const unsigned int i_resolutionWidth, const unsigned int i_resolutionHeight,
-		eae6320::Application::cbApplication& io_application, HWND& o_window );
+		Engine::Application::cbApplication& io_application, HWND& o_window );
 	bool CreateMainWindowClass( const HINSTANCE i_thisInstanceOfTheApplication, const char* const i_mainWindowClassName,
 		WNDPROC fOnMessageReceivedFromWindows, ATOM& o_mainWindowClass,
 		const WORD* const i_iconId_large = NULL, const WORD* const i_iconId_small = NULL );
@@ -19,7 +19,7 @@ namespace
 	bool FreeMainWindowClass( const HINSTANCE i_thisInstanceOfTheApplication, ATOM& io_mainWindowClass );
 }
 
-bool eae6320::Application::cbApplication::GetResolution( unsigned int& o_width, unsigned int& o_height ) const
+bool Engine::Application::cbApplication::GetResolution( unsigned int& o_width, unsigned int& o_height ) const
 {
 	if ( ( m_resolutionWidth != 0 ) && ( m_resolutionHeight != 0 ) )
 	{
@@ -33,16 +33,16 @@ bool eae6320::Application::cbApplication::GetResolution( unsigned int& o_width, 
 	}
 }
 
-eae6320::Application::cbApplication* eae6320::Application::cbApplication::GetApplicationFromWindow( const HWND i_window )
+Engine::Application::cbApplication* Engine::Application::cbApplication::GetApplicationFromWindow( const HWND i_window )
 {
 	const LONG_PTR userData = GetWindowLongPtr( i_window, GWLP_USERDATA );
 	cbApplication* const application = reinterpret_cast<cbApplication*>( userData );
-	EAE6320_ASSERT( application != NULL );
-	EAE6320_ASSERT( application->m_mainWindow == i_window );
+	ASSERT( application != NULL );
+	ASSERT( application->m_mainWindow == i_window );
 	return application;
 }
 
-bool eae6320::Application::cbApplication::WaitForApplicationToFinish( int& o_exitCode )
+bool Engine::Application::cbApplication::WaitForApplicationToFinish( int& o_exitCode )
 {
 	MSG message = { 0 };
 	do
@@ -71,7 +71,7 @@ bool eae6320::Application::cbApplication::WaitForApplicationToFinish( int& o_exi
 	return true;
 }
 
-LRESULT CALLBACK eae6320::Application::cbApplication::OnMessageReceivedFromWindows( HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam )
+LRESULT CALLBACK Engine::Application::cbApplication::OnMessageReceivedFromWindows( HWND i_window, UINT i_message, WPARAM i_wParam, LPARAM i_lParam )
 {
 	switch( i_message )
 	{
@@ -99,9 +99,9 @@ LRESULT CALLBACK eae6320::Application::cbApplication::OnMessageReceivedFromWindo
 	case WM_CREATE:
 		{
 			const CREATESTRUCT& creationData = *reinterpret_cast<CREATESTRUCT*>( i_lParam );
-			eae6320::Application::cbApplication* application =
-				reinterpret_cast<eae6320::Application::cbApplication*>( creationData.lpCreateParams );
-			EAE6320_ASSERT( application != NULL );
+			Engine::Application::cbApplication* application =
+				reinterpret_cast<Engine::Application::cbApplication*>( creationData.lpCreateParams );
+			ASSERT( application != NULL );
 			application->m_mainWindow = i_window;
 			{
 				SetLastError( ERROR_SUCCESS );
@@ -112,7 +112,7 @@ LRESULT CALLBACK eae6320::Application::cbApplication::OnMessageReceivedFromWindo
 					const std::string errorMessage = Windows::GetLastSystemError( &errorCode );
 					if ( errorCode != ERROR_SUCCESS )
 					{
-						EAE6320_ASSERTF( "Couldn't set main window user data: %s", errorMessage.c_str() );
+						ASSERTF( "Couldn't set main window user data: %s", errorMessage.c_str() );
 						Logging::OutputError( "Windows failed to set the main window's user data: %s", errorMessage.c_str() );
 						application->m_mainWindow = NULL;
 						return -1;
@@ -140,7 +140,7 @@ LRESULT CALLBACK eae6320::Application::cbApplication::OnMessageReceivedFromWindo
 	return DefWindowProc( i_window, i_message, i_wParam, i_lParam );
 }
 
-bool eae6320::Application::cbApplication::Initialize_base( const sEntryPointParameters& i_entryPointParameters )
+bool Engine::Application::cbApplication::Initialize_base( const sEntryPointParameters& i_entryPointParameters )
 {
 	bool wereThereErrors = false;
 	m_thisInstanceOfTheApplication = i_entryPointParameters.applicationInstance;
@@ -149,7 +149,7 @@ bool eae6320::Application::cbApplication::Initialize_base( const sEntryPointPara
 		OnMessageReceivedFromWindows, m_mainWindowClass,
 		GetLargeIconId(), GetSmallIconId() ) )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		wereThereErrors = true;
 		goto OnExit;
 	}
@@ -161,13 +161,13 @@ bool eae6320::Application::cbApplication::Initialize_base( const sEntryPointPara
 			desiredResolutionWidth, desiredResolutionHeight,
 			*this, hWindow ) )
 		{
-			EAE6320_ASSERT( hWindow == m_mainWindow );
+			ASSERT( hWindow == m_mainWindow );
 			m_resolutionWidth = desiredResolutionWidth;
 			m_resolutionHeight = desiredResolutionHeight;
 		}
 		else
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			wereThereErrors = true;
 			goto OnExit;
 		}
@@ -181,27 +181,27 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool eae6320::Application::cbApplication::PopulateGraphicsInitializationParameters( Graphics::sInitializationParameters& o_initializationParameters )
+bool Engine::Application::cbApplication::PopulateGraphicsInitializationParameters( Graphics::sInitializationParameters& o_initializationParameters )
 {
-	EAE6320_ASSERT( m_mainWindow != NULL );
+	ASSERT( m_mainWindow != NULL );
 	o_initializationParameters.mainWindow = m_mainWindow;
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	o_initializationParameters.resolutionWidth = m_resolutionWidth;
 	o_initializationParameters.resolutionHeight = m_resolutionHeight;
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 	o_initializationParameters.thisInstanceOfTheApplication = m_thisInstanceOfTheApplication;
 #endif
 	return true;
 }
 
-bool eae6320::Application::cbApplication::PopulateUserOutputInitializationParameters( UserOutput::sInitializationParameters& o_initializationParameters )
+bool Engine::Application::cbApplication::PopulateUserOutputInitializationParameters( UserOutput::sInitializationParameters& o_initializationParameters )
 {
-	EAE6320_ASSERT( m_mainWindow != NULL );
+	ASSERT( m_mainWindow != NULL );
 	o_initializationParameters.mainWindow = m_mainWindow;
 	return true;
 }
 
-bool eae6320::Application::cbApplication::CleanUp_base()
+bool Engine::Application::cbApplication::CleanUp_base()
 {
 	bool wereThereErrors = false;
 
@@ -209,7 +209,7 @@ bool eae6320::Application::cbApplication::CleanUp_base()
 	{
 		if ( !FreeMainWindow( m_mainWindow ) )
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			wereThereErrors = true;
 		}
 	}
@@ -217,7 +217,7 @@ bool eae6320::Application::cbApplication::CleanUp_base()
 	{
 		if ( !FreeMainWindowClass( m_thisInstanceOfTheApplication, m_mainWindowClass ) )
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			wereThereErrors = true;
 		}
 	}
@@ -225,7 +225,7 @@ bool eae6320::Application::cbApplication::CleanUp_base()
 	return !wereThereErrors;
 }
 
-eae6320::Application::cbApplication::cbApplication()
+Engine::Application::cbApplication::cbApplication()
 	:
 	m_mainWindow( NULL ), m_mainWindowClass( NULL ), m_thisInstanceOfTheApplication( NULL ),
 	m_resolutionWidth( 0 ), m_resolutionHeight( 0 )
@@ -237,7 +237,7 @@ namespace
 {
 	bool CreateMainWindow( const HINSTANCE i_thisInstanceOfTheApplication, const char* const i_windowName, const ATOM i_windowClass,
 		const unsigned int i_resolutionWidth, const unsigned int i_resolutionHeight,
-		eae6320::Application::cbApplication& io_application, HWND& o_window )
+		Engine::Application::cbApplication& io_application, HWND& o_window )
 	{
 		{
 			const DWORD windowStyle =
@@ -260,13 +260,13 @@ namespace
 				hParent, hMenu, i_thisInstanceOfTheApplication, userData );
 			if ( o_window != NULL )
 			{
-				eae6320::Logging::OutputMessage( "Created main window \"%s\"", i_windowName );
+				Engine::Logging::OutputMessage( "Created main window \"%s\"", i_windowName );
 			}
 			else
 			{
-				const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-				EAE6320_ASSERTF( false, "Main window wasn't created: %s", windowsErrorMessage.c_str() );
-				eae6320::Logging::OutputError( "Windows failed to create the main window: %s", windowsErrorMessage.c_str() );
+				const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+				ASSERTF( false, "Main window wasn't created: %s", windowsErrorMessage.c_str() );
+				Engine::Logging::OutputError( "Windows failed to create the main window: %s", windowsErrorMessage.c_str() );
 				return false;
 			}
 		}
@@ -281,17 +281,17 @@ namespace
 			{
 				if ( GetWindowRect( o_window, &windowCoordinates ) == FALSE )
 				{
-					const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-					EAE6320_ASSERTF( false, "Couldn't get coordinates of the main window: %s", windowsErrorMessage.c_str() );
-					eae6320::Logging::OutputError( "Windows failed to get the coordinates of the main window: %s", windowsErrorMessage.c_str() );
+					const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+					ASSERTF( false, "Couldn't get coordinates of the main window: %s", windowsErrorMessage.c_str() );
+					Engine::Logging::OutputError( "Windows failed to get the coordinates of the main window: %s", windowsErrorMessage.c_str() );
 					goto OnError;
 				}
 				RECT clientDimensions;
 				if ( GetClientRect( o_window, &clientDimensions ) == FALSE )
 				{
-					const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-					EAE6320_ASSERTF( false, "Couldn't get the main window's client dimensions: %s", windowsErrorMessage.c_str() );
-					eae6320::Logging::OutputError( "Windows failed to get the dimensions of the main window's client area:: %s",
+					const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+					ASSERTF( false, "Couldn't get the main window's client dimensions: %s", windowsErrorMessage.c_str() );
+					Engine::Logging::OutputError( "Windows failed to get the dimensions of the main window's client area:: %s",
 						windowsErrorMessage.c_str() );
 					goto OnError;
 				}
@@ -306,15 +306,15 @@ namespace
 					windowCoordinates.left, windowCoordinates.top, desiredWidth_window, desiredHeight_window,
 					redrawTheWindowAfterItsBeenResized ) != FALSE )
 				{
-					eae6320::Logging::OutputMessage( "Set main window resolution to %u x %u",
+					Engine::Logging::OutputMessage( "Set main window resolution to %u x %u",
 						i_resolutionWidth, i_resolutionHeight );
 				}
 				else
 				{
-					const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-					EAE6320_ASSERTF( false, "Couldn't resize the main window to &i x &i: %s",
+					const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+					ASSERTF( false, "Couldn't resize the main window to &i x &i: %s",
 						desiredWidth_window, desiredHeight_window, windowsErrorMessage.c_str() );
-					eae6320::Logging::OutputError( "Windows failed to resize main window to &i x &i"
+					Engine::Logging::OutputError( "Windows failed to resize main window to &i x &i"
 						" (based on a desired resolution of %u x %u): %s",
 						desiredWidth_window, desiredHeight_window, i_resolutionWidth, i_resolutionHeight, windowsErrorMessage.c_str() );
 					goto OnError;
@@ -370,14 +370,14 @@ namespace
 		o_mainWindowClass = RegisterClassEx( &wndClassEx );
 		if ( o_mainWindowClass != NULL )
 		{
-			eae6320::Logging::OutputMessage( "Registered main window class \"%s\"", i_mainWindowClassName );
+			Engine::Logging::OutputMessage( "Registered main window class \"%s\"", i_mainWindowClassName );
 			return true;
 		}
 		else
 		{
-			const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-			EAE6320_ASSERTF( false, "Main window class registration failed: %s", windowsErrorMessage.c_str() );
-			eae6320::Logging::OutputError( "Windows failed to register the main window class: %s", windowsErrorMessage.c_str() );
+			const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+			ASSERTF( false, "Main window class registration failed: %s", windowsErrorMessage.c_str() );
+			Engine::Logging::OutputError( "Windows failed to register the main window class: %s", windowsErrorMessage.c_str() );
 			return false;
 		}
 	}
@@ -386,16 +386,16 @@ namespace
 	{
 		if ( DestroyWindow( io_window ) != FALSE )
 		{
-			eae6320::Logging::OutputMessage( "Destroyed main window" );
-			EAE6320_ASSERT( io_window == NULL );
+			Engine::Logging::OutputMessage( "Destroyed main window" );
+			ASSERT( io_window == NULL );
 			io_window = NULL;
 			return true;
 		}
 		else
 		{
-			const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-			EAE6320_ASSERTF( false, "Main window wasn't destroyed: %s", windowsErrorMessage.c_str() );
-			eae6320::Logging::OutputError( "Windows failed to destroy the main window: %s", windowsErrorMessage.c_str() );
+			const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+			ASSERTF( false, "Main window wasn't destroyed: %s", windowsErrorMessage.c_str() );
+			Engine::Logging::OutputError( "Windows failed to destroy the main window: %s", windowsErrorMessage.c_str() );
 			return false;
 		}
 	}
@@ -404,15 +404,15 @@ namespace
 	{
 		if ( UnregisterClass( MAKEINTATOM( io_mainWindowClass ), i_thisInstanceOfTheApplication ) != FALSE )
 		{
-			eae6320::Logging::OutputMessage( "Unregistered main window class" );
+			Engine::Logging::OutputMessage( "Unregistered main window class" );
 			io_mainWindowClass = NULL;
 			return true;
 		}
 		else
 		{
-			const std::string windowsErrorMessage = eae6320::Windows::GetLastSystemError();
-			EAE6320_ASSERTF( false, "Main window class wasn't unregistered: %s", windowsErrorMessage.c_str() );
-			eae6320::Logging::OutputError( "Windows failed to unregister the main window class: %s", windowsErrorMessage.c_str() );
+			const std::string windowsErrorMessage = Engine::Windows::GetLastSystemError();
+			ASSERTF( false, "Main window class wasn't unregistered: %s", windowsErrorMessage.c_str() );
+			Engine::Logging::OutputError( "Windows failed to unregister the main window class: %s", windowsErrorMessage.c_str() );
 			return false;
 		}
 	}

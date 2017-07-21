@@ -1,10 +1,10 @@
-#ifndef EAE6320_CMESHBUILDER_H
-#define EAE6320_CMESHBUILDER_H
+#ifndef CMESHBUILDER_H
+#define CMESHBUILDER_H
 
 #include "../AssetBuildLibrary/cbBuilder.h"
 #include "../../External/Lua/Includes.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

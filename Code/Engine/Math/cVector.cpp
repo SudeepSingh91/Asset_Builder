@@ -1,137 +1,162 @@
-// Header Files
-//=============
-
 #include "cVector.h"
 
 #include <cmath>
 #include "../Asserts/Asserts.h"
-
-// Static Data Initialization
-//===========================
 
 namespace
 {
 	const float s_epsilon = 1.0e-9f;
 }
 
-// Interface
-//==========
+namespace Engine
+{
+	namespace Math
+	{
+		float cVector::x() const
+		{
+			return m_x;
+		}
 
-// Addition
-eae6320::Math::cVector eae6320::Math::cVector::operator +( const cVector& i_rhs ) const
-{
-	return cVector( x + i_rhs.x, y + i_rhs.y, z + i_rhs.z );
-}
-eae6320::Math::cVector& eae6320::Math::cVector::operator +=( const cVector& i_rhs )
-{
-	x += i_rhs.x;
-	y += i_rhs.y;
-	z += i_rhs.z;
-	return *this;
-}
+		float cVector::y() const
+		{
+			return m_y;
+		}
 
-// Subtraction / Negation
-eae6320::Math::cVector eae6320::Math::cVector::operator -( const cVector& i_rhs ) const
-{
-	return cVector( x - i_rhs.x, y - i_rhs.y, z - i_rhs.z );
-}
-eae6320::Math::cVector& eae6320::Math::cVector::operator -=( const cVector& i_rhs )
-{
-	x -= i_rhs.x;
-	y -= i_rhs.y;
-	z -= i_rhs.z;
-	return *this;
-}
-eae6320::Math::cVector eae6320::Math::cVector::operator -() const
-{
-	return cVector( -x, -y, -z );
-}
+		float cVector::z() const
+		{
+			return m_z;
+		}
 
-// Multiplication
-eae6320::Math::cVector eae6320::Math::cVector::operator *( const float i_rhs ) const
-{
-	return cVector( x * i_rhs, y * i_rhs, z * i_rhs );
-}
-eae6320::Math::cVector& eae6320::Math::cVector::operator *=( const float i_rhs )
-{
-	x *= i_rhs;
-	y *= i_rhs;
-	z *= i_rhs;
-	return *this;
-}
-eae6320::Math::cVector operator *( const float i_lhs, const eae6320::Math::cVector& i_rhs )
-{
-	return i_rhs * i_lhs;
-}
+		void cVector::x(const float i_x)
+		{
+			m_x = i_x;
+		}
 
-// Division
-eae6320::Math::cVector eae6320::Math::cVector::operator /( const float i_rhs ) const
-{
-	EAE6320_ASSERTF( std::abs( i_rhs ) > s_epsilon, "Can't divide by zero" );
-	const float rhs_reciprocal = 1.0f / i_rhs;
-	return cVector( x * rhs_reciprocal, y * rhs_reciprocal, z * rhs_reciprocal );
-}
-eae6320::Math::cVector& eae6320::Math::cVector::operator /=( const float i_rhs )
-{
-	EAE6320_ASSERTF( std::abs( i_rhs ) > s_epsilon, "Can't divide by zero" );
-	const float rhs_reciprocal = 1.0f / i_rhs;
-	x *= rhs_reciprocal;
-	y *= rhs_reciprocal;
-	z *= rhs_reciprocal;
-	return *this;
-}
+		void cVector::y(const float i_y)
+		{
+			m_y = i_y;
+		}
 
-// Length / Normalization
-float eae6320::Math::cVector::GetLength() const
-{
-	return std::sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
-}
-float eae6320::Math::cVector::Normalize()
-{
-	const float length = GetLength();
-	EAE6320_ASSERTF( length > s_epsilon, "Can't divide by zero" );
-	operator /=( length );
-	return length;
-}
-eae6320::Math::cVector eae6320::Math::cVector::CreateNormalized() const
-{
-	const float length = GetLength();
-	EAE6320_ASSERTF( length > s_epsilon, "Can't divide by zero" );
-	const float length_reciprocal = 1.0f / length;
-	return cVector( x * length_reciprocal, y * length_reciprocal, z * length_reciprocal );
-}
+		void cVector::z(const float i_z)
+		{
+			m_z = i_z;
+		}
 
-// Products
-float eae6320::Math::Dot( const cVector& i_lhs, const cVector& i_rhs )
-{
-	return ( i_lhs.x * i_rhs.x ) + ( i_lhs.y * i_rhs.y ) + ( i_lhs.z * i_rhs.z );
-}
-eae6320::Math::cVector eae6320::Math::Cross( const cVector& i_lhs, const cVector& i_rhs )
-{
-	return cVector(
-		( i_lhs.y * i_rhs.z ) - ( i_lhs.z * i_rhs.y ),
-		( i_lhs.z * i_rhs.x ) - ( i_lhs.x * i_rhs.z ),
-		( i_lhs.x * i_rhs.y ) - ( i_lhs.y * i_rhs.x ) );
-}
+		cVector cVector::operator +(const cVector& i_rhs) const
+		{
+			return cVector(m_x + i_rhs.m_x, m_y + i_rhs.m_y, m_z + i_rhs.m_z);
+		}
 
-// Comparison
-bool eae6320::Math::cVector::operator ==( const cVector& i_rhs ) const
-{
-	// Use & rather than && to prevent branches (all three comparisons will be evaluated)
-	return ( x == i_rhs.x ) & ( y == i_rhs.y ) & ( z == i_rhs.z );
-}
-bool eae6320::Math::cVector::operator !=( const cVector& i_rhs ) const
-{
-	// Use | rather than || to prevent branches (all three comparisons will be evaluated)
-	return ( x != i_rhs.x ) | ( y != i_rhs.y ) | ( z != i_rhs.z );
-}
+		cVector& cVector::operator +=(const cVector& i_rhs)
+		{
+			m_x += i_rhs.m_x;
+			m_y += i_rhs.m_y;
+			m_z += i_rhs.m_z;
+			return *this;
+		}
 
-// Initialization / Shut Down
-//---------------------------
+		cVector Engine::Math::cVector::operator -(const cVector& i_rhs) const
+		{
+			return cVector(m_x - i_rhs.m_x, m_y - i_rhs.m_y, m_z - i_rhs.m_z);
+		}
 
-eae6320::Math::cVector::cVector( const float i_x, const float i_y, const float i_z )
-	:
-	x( i_x ), y( i_y ), z( i_z )
-{
+		cVector& cVector::operator -=(const cVector& i_rhs)
+		{
+			m_x -= i_rhs.m_x;
+			m_y -= i_rhs.m_y;
+			m_z -= i_rhs.m_z;
+			return *this;
+		}
 
+		cVector cVector::operator -() const
+		{
+			return cVector(-m_x, -m_y, -m_z);
+		}
+
+		cVector cVector::operator *(const float i_rhs) const
+		{
+			return cVector(m_x * i_rhs, m_y * i_rhs, m_z * i_rhs);
+		}
+
+		cVector& cVector::operator *=(const float i_rhs)
+		{
+			m_x *= i_rhs;
+			m_y *= i_rhs;
+			m_z *= i_rhs;
+			return *this;
+		}
+
+		cVector operator *(const float i_lhs, const Engine::Math::cVector& i_rhs)
+		{
+			return i_rhs * i_lhs;
+		}
+
+		cVector cVector::operator /(const float i_rhs) const
+		{
+			ASSERTF(std::abs(i_rhs) > s_epsilon, "Can't divide by zero");
+			const float rhs_reciprocal = 1.0f / i_rhs;
+			return cVector(m_x * rhs_reciprocal, m_y * rhs_reciprocal, m_z * rhs_reciprocal);
+		}
+
+		cVector& cVector::operator /=(const float i_rhs)
+		{
+			ASSERTF(std::abs(i_rhs) > s_epsilon, "Can't divide by zero");
+			const float rhs_reciprocal = 1.0f / i_rhs;
+			m_x *= rhs_reciprocal;
+			m_y *= rhs_reciprocal;
+			m_z *= rhs_reciprocal;
+			return *this;
+		}
+
+		float cVector::GetLength() const
+		{
+			return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z));
+		}
+
+		float cVector::Normalize()
+		{
+			const float length = GetLength();
+			ASSERTF(length > s_epsilon, "Can't divide by zero");
+			operator /=(length);
+			return length;
+		}
+
+		cVector cVector::CreateNormalized() const
+		{
+			const float length = GetLength();
+			ASSERTF(length > s_epsilon, "Can't divide by zero");
+			const float length_reciprocal = 1.0f / length;
+			return cVector(m_x * length_reciprocal, m_y * length_reciprocal, m_z * length_reciprocal);
+		}
+
+		float Dot(const cVector& i_lhs, const cVector& i_rhs)
+		{
+			return (i_lhs.x() * i_rhs.x()) + (i_lhs.y() * i_rhs.y()) + (i_lhs.z() * i_rhs.z());
+		}
+
+		cVector Cross(const cVector& i_lhs, const cVector& i_rhs)
+		{
+			return cVector(
+				(i_lhs.y() * i_rhs.z()) - (i_lhs.z() * i_rhs.y()),
+				(i_lhs.z() * i_rhs.x()) - (i_lhs.x() * i_rhs.z()),
+				(i_lhs.x() * i_rhs.y()) - (i_lhs.y() * i_rhs.x()));
+		}
+
+		bool cVector::operator ==(const cVector& i_rhs) const
+		{
+			return (m_x == i_rhs.m_x) & (m_y == i_rhs.m_y) & (m_z == i_rhs.m_z);
+		}
+
+		bool cVector::operator !=(const cVector& i_rhs) const
+		{
+			return (m_x != i_rhs.m_x) | (m_y != i_rhs.m_y) | (m_z != i_rhs.m_z);
+		}
+
+		cVector::cVector(const float i_x, const float i_y, const float i_z)
+			:
+			m_x(i_x), m_y(i_y), m_z(i_z)
+		{
+
+		}
+	}
 }

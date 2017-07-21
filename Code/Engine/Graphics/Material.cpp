@@ -1,6 +1,6 @@
 #include "Material.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -14,7 +14,7 @@ namespace eae6320
 
 				if (!Platform::LoadBinaryFile(i_filepath, s_Filedata))
 				{
-					eae6320::Logging::OutputError("Direct3D failed to load file");
+					Engine::Logging::OutputError("Direct3D failed to load file");
 					return false;
 				}
 

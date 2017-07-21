@@ -1,7 +1,7 @@
-#ifndef EAE6320_PLATFORM_H
-#define EAE6320_PLATFORM_H
+#ifndef PLATFORM_H
+#define PLATFORM_H
 
-#ifdef EAE6320_PLATFORM_WINDOWS
+#ifdef PLATFORM_WINDOWS
 	#include "../Windows/Includes.h"
 #endif
 
@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace eae6320
+namespace Engine
 {
 	namespace Platform
 	{

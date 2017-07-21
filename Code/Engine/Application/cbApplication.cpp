@@ -6,7 +6,7 @@
 #include "../Time/Time.h"
 #include "../UserOutput/UserOutput.h"
 
-int eae6320::Application::cbApplication::ParseEntryPointParametersAndRun( const sEntryPointParameters& i_entryPointParameters )
+int Engine::Application::cbApplication::ParseEntryPointParametersAndRun( const sEntryPointParameters& i_entryPointParameters )
 {
 	int exitCode = EXIT_SUCCESS;
 
@@ -17,7 +17,7 @@ int eae6320::Application::cbApplication::ParseEntryPointParametersAndRun( const 
 	else
 	{
 		exitCode = EXIT_FAILURE;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		Logging::OutputError( "Application initialization failed!" );
 		UserOutput::Print( "Initialization failed! (Check the log file for details.) This program will now exit." );
 		goto OnExit;
@@ -25,7 +25,7 @@ int eae6320::Application::cbApplication::ParseEntryPointParametersAndRun( const 
 
 	if ( !WaitForApplicationToFinish( exitCode ) )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		UserOutput::Print( "The application encountered an error and will now exit" );
 		goto OnExit;
 	}
@@ -34,7 +34,7 @@ OnExit:
 
 	if ( !CleanUp_all() )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		if ( exitCode == EXIT_SUCCESS )
 		{
 			exitCode = EXIT_FAILURE;
@@ -44,33 +44,33 @@ OnExit:
 	return exitCode;
 }
 
-bool eae6320::Application::cbApplication::Initialize_all( const sEntryPointParameters& i_entryPointParameters )
+bool Engine::Application::cbApplication::Initialize_all( const sEntryPointParameters& i_entryPointParameters )
 {
 	if ( !Logging::Initialize( GetPathToLogTo() ) )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		return false;
 	}
 	if ( !Initialize_base( i_entryPointParameters ) )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		return false;
 	}
 	if ( !Initialize_engine() )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		return false;	
 	}
 	if ( !Initialize() )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		return false;
 	}
 
 	return true;
 }
 
-bool eae6320::Application::cbApplication::Initialize_engine()
+bool Engine::Application::cbApplication::Initialize_engine()
 {
 	{
 		UserOutput::sInitializationParameters initializationParameters;
@@ -78,34 +78,35 @@ bool eae6320::Application::cbApplication::Initialize_engine()
 		{
 			if ( !UserOutput::Initialize( initializationParameters ) )
 			{
-				EAE6320_ASSERT( false );
+				ASSERT( false );
 				return false;
 			}
 		}
 		else
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			return false;
 		}
 	}
 	if ( !Time::Initialize() )
 	{
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 		return false;
 	}
 	{
+		Graphics::GraphicsData* m_graphicsData = Graphics::GraphicsData::GetGraphicsInst();
 		Graphics::sInitializationParameters initializationParameters;
 		if ( PopulateGraphicsInitializationParameters( initializationParameters ) )
 		{
-			if ( !Graphics::Initialize( initializationParameters ) )
+			if ( !m_graphicsData->Initialize( initializationParameters ) )
 			{
-				EAE6320_ASSERT( false );
+				ASSERT( false );
 				return false;
 			}
 		}
 		else
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			return false;
 		}
 	}
@@ -113,65 +114,65 @@ bool eae6320::Application::cbApplication::Initialize_engine()
 	return true;
 }
 
-bool eae6320::Application::cbApplication::CleanUp_all()
+bool Engine::Application::cbApplication::CleanUp_all()
 {
 	bool wereThereErrors = false;
 
 	if ( !CleanUp() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 	if ( !CleanUp_engine() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 	if ( !CleanUp_base() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 	if ( !Logging::CleanUp() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 
 	return !wereThereErrors;
 }
 
-bool eae6320::Application::cbApplication::CleanUp_engine()
+bool Engine::Application::cbApplication::CleanUp_engine()
 {
 	bool wereThereErrors = false;
+	Graphics::GraphicsData* m_graphicsData = Graphics::GraphicsData::GetGraphicsInst();
 
-	if ( !Graphics::CleanUp() )
+	if ( !m_graphicsData->CleanUp() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 	if ( !Time::CleanUp() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 	if ( !UserOutput::CleanUp() )
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERT( false );
+		ASSERT( false );
 	}
 
 	return !wereThereErrors;
 }
 
-eae6320::Application::cbApplication::~cbApplication()
+Engine::Application::cbApplication::~cbApplication()
 {
 	CleanUp_base();
 }
 
-void eae6320::Application::cbApplication::OnNewFrame()
+void Engine::Application::cbApplication::OnNewFrame()
 {
 	Time::OnNewFrame();
 	DrawMesh();
-	Graphics::RenderFrame();
 }

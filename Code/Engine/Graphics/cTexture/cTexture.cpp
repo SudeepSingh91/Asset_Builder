@@ -5,7 +5,7 @@
 #include "../../Platform/Platform.h"
 #include "../../../External/DirectXTex/DirectXTex/DDS.h"
 
-bool eae6320::Graphics::cTexture::Load( const char* const i_path )
+bool Engine::Graphics::cTexture::Load( const char* const i_path )
 {
 	bool wereThereErrors = false;
 
@@ -16,7 +16,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 		if ( !Platform::LoadBinaryFile( i_path, dataFromFile, &errorMessage ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, errorMessage.c_str() );
+			ASSERTF( false, errorMessage.c_str() );
 			Logging::OutputError( "Failed to load texture data from file %s: %s", i_path, errorMessage.c_str() );
 			goto OnExit;
 		}
@@ -33,7 +33,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 	else
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERTF( false, "Invalid DDS file %s", i_path );
+		ASSERTF( false, "Invalid DDS file %s", i_path );
 		Logging::OutputError( "The DDS file %s doesn't start with the magic number", i_path );
 		goto OnExit;
 	}
@@ -47,7 +47,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 			|| ( header->ddspf.dwSize != sizeof( DirectX::DDS_PIXELFORMAT ) ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "Invalid DDS file %s", i_path );
+			ASSERTF( false, "Invalid DDS file %s", i_path );
 			Logging::OutputError( "The header in the DDS file %s has the wrong struct sizes", i_path );
 			goto OnExit;
 		}
@@ -55,7 +55,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 	else
 	{
 		wereThereErrors = true;
-		EAE6320_ASSERTF( false, "Invalid DDS file %s", i_path );
+		ASSERTF( false, "Invalid DDS file %s", i_path );
 		Logging::OutputError( "The DDS file %s isn't big enough for a header", i_path );
 		goto OnExit;
 	}
@@ -72,7 +72,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 		else
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "Invalid DDS file %s", i_path );
+			ASSERTF( false, "Invalid DDS file %s", i_path );
 			Logging::OutputError( "The DDS file %s isn't big enough for a DXT10 header", i_path );
 			goto OnExit;
 		}
@@ -82,21 +82,21 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 		if ( header_dxt10 )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			Logging::OutputError( "The DDS file %s uses a DXT10 header, which is unsupported", i_path );
 			goto OnExit;
 		}
 		if ( header->dwFlags & DDS_HEADER_FLAGS_VOLUME )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			Logging::OutputError( "The DDS file %s is a volume texture, which is unsupported", i_path );
 			goto OnExit;
 		}
 		else if ( header->dwCaps & DDS_CUBEMAP )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			Logging::OutputError( "The DDS file %s is a cube texture, which is unsupported", i_path );
 			goto OnExit;
 		}
@@ -106,7 +106,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 				&& ( header->ddspf.dwFourCC != DirectX::DDSPF_DXT5.dwFourCC ) )
 			{
 				wereThereErrors = true;
-				EAE6320_ASSERT( false );
+				ASSERT( false );
 				Logging::OutputError( "The DDS file %s isn't one of the supported formats: BC1, BC3", i_path );
 				goto OnExit;
 			}
@@ -114,7 +114,7 @@ bool eae6320::Graphics::cTexture::Load( const char* const i_path )
 		else
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			Logging::OutputError( "The DDS file %s doesn't use a FourCC pixel format, which is unsupported", i_path );
 			goto OnExit;
 		}
@@ -158,18 +158,18 @@ OnExit:
 	return !wereThereErrors;
 }
 
-eae6320::Graphics::cTexture::cTexture()
+Engine::Graphics::cTexture::cTexture()
 	:
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	m_textureView( NULL )
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 	m_textureId( 0 )
 #endif
 {
 
 }
 
-eae6320::Graphics::cTexture::~cTexture()
+Engine::Graphics::cTexture::~cTexture()
 {
 	CleanUp();
 }

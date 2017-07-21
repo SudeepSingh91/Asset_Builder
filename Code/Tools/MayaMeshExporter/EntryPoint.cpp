@@ -6,7 +6,7 @@
 
 namespace
 {
-	const char* s_pluginName = "Sudeep Singh EAE6320 Mesh Format";
+	const char* s_pluginName = "Sudeep Singh Mesh Format";
 }
 
 __declspec(dllexport) MStatus initializePlugin( MObject io_object )
@@ -17,7 +17,7 @@ __declspec(dllexport) MStatus initializePlugin( MObject io_object )
 	{
 		char* noIcon = "none";
 		status = plugin.registerFileTranslator( s_pluginName, noIcon,
-			eae6320::cMayaMeshExporter::Create );
+			Engine::cMayaMeshExporter::Create );
 		if ( !status )
 		{
 			MGlobal::displayError( MString( "Failed to register mesh exporter: " ) + status.errorString() );

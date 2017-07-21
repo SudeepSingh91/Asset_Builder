@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace Camera
 	{
@@ -67,7 +67,7 @@ namespace eae6320
 
 		void Camera::Rotate(float i_rad, const Math::cVector i_axisNormalized)
 		{
-			eae6320::Math::cQuaternion temp(i_rad, i_axisNormalized);
+			Engine::Math::cQuaternion temp(i_rad, i_axisNormalized);
 			s_ori = s_ori * temp;
 		}
 	}

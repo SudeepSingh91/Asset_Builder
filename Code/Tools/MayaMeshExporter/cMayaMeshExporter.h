@@ -1,11 +1,11 @@
-#ifndef EAE6320_CMAYAMESHEXPORTER_H
-#define EAE6320_CMAYAMESHEXPORTER_H
+#ifndef CMAYAMESHEXPORTER_H
+#define CMAYAMESHEXPORTER_H
 
 #include "../../Engine/Windows/Includes.h"
 
 #include <maya/MPxFileTranslator.h>
 
-namespace eae6320
+namespace Engine
 {
 	class cMayaMeshExporter : public MPxFileTranslator
 	{

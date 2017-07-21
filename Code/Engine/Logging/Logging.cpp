@@ -37,7 +37,7 @@ namespace
 	bool s_cleanUpResult = false;
 }
 
-bool eae6320::Logging::OutputMessage( const char* const i_message, ... )
+bool Engine::Logging::OutputMessage( const char* const i_message, ... )
 {
 	bool result;
 	{
@@ -46,13 +46,13 @@ bool eae6320::Logging::OutputMessage( const char* const i_message, ... )
 		result = ::OutputMessage( i_message, insertions );
 		va_end( insertions );
 	}
-#ifdef EAE6320_LOGGING_FLUSHBUFFERAFTEREVERYMESSAGE
+#ifdef Engine_LOGGING_FLUSHBUFFERAFTEREVERYMESSAGE
 	s_logger.FlushLog();
 #endif
 	return result;
 }
 
-bool eae6320::Logging::OutputError( const char* const i_errorMessage, ... )
+bool Engine::Logging::OutputError( const char* const i_errorMessage, ... )
 {
 	bool result;
 	{
@@ -65,12 +65,12 @@ bool eae6320::Logging::OutputError( const char* const i_errorMessage, ... )
 	return result;
 }
 
-bool eae6320::Logging::Initialize( const char* const i_pathToLogTo )
+bool Engine::Logging::Initialize( const char* const i_pathToLogTo )
 {
 	return s_logger.InitializeIfNecesary( i_pathToLogTo );
 }
 
-bool eae6320::Logging::CleanUp()
+bool Engine::Logging::CleanUp()
 {
 	cLogging::CleanUp();
 	return s_cleanUpResult;
@@ -91,7 +91,7 @@ namespace
 			}
 			else
 			{
-				EAE6320_ASSERTF( false, "The internal logging buffer of size %u was not big enough to hold the formatted message of length %i",
+				ASSERTF( false, "The internal logging buffer of size %u was not big enough to hold the formatted message of length %i",
 					bufferSize, formattingResult + 1 );
 				std::ostringstream errorMessage;
 				errorMessage << "FORMATTING ERROR! (The internal logging buffer of size " << bufferSize
@@ -103,7 +103,7 @@ namespace
 		}
 		else
 		{
-			EAE6320_ASSERTF( false, "An encoding error occurred while logging the message \"%s\"", i_message );
+			ASSERTF( false, "An encoding error occurred while logging the message \"%s\"", i_message );
 			std::ostringstream errorMessage;
 			errorMessage << "ENCODING ERROR! Unformatted message was:\n\t" << i_message;
 			s_logger.OutputMessage( errorMessage.str().c_str() );
@@ -146,10 +146,10 @@ namespace
 				else
 				{
 					const bool arePathsEqual = s_path_log.compare( i_pathToLogTo ) == 0;
-					EAE6320_ASSERTF( arePathsEqual, "The log file \"%s\" is already open,"
+					ASSERTF( arePathsEqual, "The log file \"%s\" is already open,"
 						" but an attempt is being made to initialize logging with the different path \"%s\"",
 						s_path_log.c_str(), i_pathToLogTo );
-					eae6320::Logging::OutputError( "Error! An attempt was made to initialize logging with the path \"%s\""
+					Engine::Logging::OutputError( "Error! An attempt was made to initialize logging with the path \"%s\""
 						" after the current log file had already been opened with this path", i_pathToLogTo );
 					return arePathsEqual;
 				}
@@ -162,13 +162,13 @@ namespace
 					{
 						if ( i_pathToLogTo[0] == '\0' )
 						{
-							EAE6320_ASSERT( "An attempt is being made to initialize logging with an empty path" );
+							ASSERT( "An attempt is being made to initialize logging with an empty path" );
 							return false;
 						}
 						if ( !s_path_log.empty() )
 						{
 							const bool arePathsEqual = s_path_log.compare( i_pathToLogTo ) == 0;
-							EAE6320_ASSERTF( arePathsEqual, "An attempt to initialize logging with a log file path of \"%s\" has already been made,"
+							ASSERTF( arePathsEqual, "An attempt to initialize logging with a log file path of \"%s\" has already been made,"
 								" but another attempt to initialize it is being made with the different path \"%s\"",
 								s_path_log.c_str(), i_pathToLogTo );
 						}
@@ -176,14 +176,14 @@ namespace
 					}
 					else
 					{
-						s_path_log = EAE6320_LOGGING_DEFAULTPATH;
+						s_path_log = LOGGING_DEFAULTPATH;
 					}
-					EAE6320_ASSERTF( !s_path_log.empty(), "The path to log to is empty" );
+					ASSERTF( !s_path_log.empty(), "The path to log to is empty" );
 					m_outputStream.open( s_path_log.c_str() );
 					if ( m_outputStream.is_open() )
 					{
 						s_hasTheLogFileAlreadyBeenWrittenTo = true;
-						eae6320::Logging::OutputMessage( "Opened log file \"%s\"", s_path_log.c_str() );
+						Engine::Logging::OutputMessage( "Opened log file \"%s\"", s_path_log.c_str() );
 						FlushLog();
 						return true;
 					}
@@ -197,7 +197,7 @@ namespace
 					if ( i_pathToLogTo )
 					{
 						const bool arePathsEqual = s_path_log.compare( i_pathToLogTo ) == 0;
-						EAE6320_ASSERTF( arePathsEqual, "The log file \"%s\" has already been written to,"
+						ASSERTF( arePathsEqual, "The log file \"%s\" has already been written to,"
 							" but an attempt is being made to initialize logging with the different path \"%s\"",
 							s_path_log.c_str(), i_pathToLogTo );
 						if ( !arePathsEqual )
@@ -207,10 +207,10 @@ namespace
 					}
 					m_outputStream.open( s_path_log.c_str(), std::ofstream::app );
 					const bool result = m_outputStream.is_open();
-					EAE6320_ASSERT( result );
+					ASSERT( result );
 					if ( result )
 					{
-						eae6320::Logging::OutputMessage( "Re-opened log file" );
+						Engine::Logging::OutputMessage( "Re-opened log file" );
 						FlushLog();
 					}
 					return result;
@@ -229,7 +229,7 @@ namespace
 					}
 					else
 					{
-						EAE6320_ASSERTF( false, "Calling atexit() to register logging clean up on a revived logger failed with a return value of %i", result );
+						ASSERTF( false, "Calling atexit() to register logging clean up on a revived logger failed with a return value of %i", result );
 						CleanUp();
 						return false;
 					}
@@ -237,10 +237,10 @@ namespace
 			}
 			m_outputStream.open( s_path_log.c_str(), std::ofstream::app );
 			const bool result = m_outputStream.is_open();
-			EAE6320_ASSERT( result );
+			ASSERT( result );
 			if ( result )
 			{
-				eae6320::Logging::OutputMessage( "Re-opened log file after it had been destroyed" );
+				Engine::Logging::OutputMessage( "Re-opened log file after it had been destroyed" );
 				FlushLog();
 			}
 			return result;
@@ -252,15 +252,15 @@ namespace
 		if ( s_logger.m_outputStream.is_open() )
 		{
 			{
-				eae6320::Logging::OutputMessage( "Closing log file" );
+				Engine::Logging::OutputMessage( "Closing log file" );
 				s_logger.FlushLog();
 			}
 			s_logger.m_outputStream.close();
 			s_cleanUpResult = !s_logger.m_outputStream.is_open();
-			EAE6320_ASSERTF( s_cleanUpResult, "Log file wasn't closed" );
+			ASSERTF( s_cleanUpResult, "Log file wasn't closed" );
 			if ( !s_cleanUpResult )
 			{
-				eae6320::Logging::OutputError( "Error: Log file did not close" );
+				Engine::Logging::OutputError( "Error: Log file did not close" );
 			}
 			return;
 		}

@@ -1,11 +1,11 @@
-#ifndef EAE6320_GRAPHICS_CRENDERSTATE_H
-#define EAE6320_GRAPHICS_CRENDERSTATE_H
+#ifndef GRAPHICS_CRENDERSTATE_H
+#define GRAPHICS_CRENDERSTATE_H
 
 #include "Configuration.h"
 
 #include <cstdint>
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -30,13 +30,13 @@ namespace eae6320
 	}
 }
 
-#ifdef EAE6320_PLATFORM_D3D
+#ifdef PLATFORM_D3D
 	struct ID3D11BlendState;
 	struct ID3D11DepthStencilState;
 	struct ID3D11RasterizerState;
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -56,7 +56,7 @@ namespace eae6320
 
 		private:
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 			ID3D11BlendState* m_blendState;
 			ID3D11DepthStencilState* m_depthStencilState;
 			ID3D11RasterizerState* m_rasterizerState;

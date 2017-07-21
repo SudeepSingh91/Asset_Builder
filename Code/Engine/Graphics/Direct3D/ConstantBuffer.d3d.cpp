@@ -1,7 +1,7 @@
 #include "../ConstantBuffer.h"
 #include "../../Math/Functions.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace ConstantBuffer
 	{
@@ -40,8 +40,8 @@ namespace eae6320
 			}
 			else
 			{
-				EAE6320_ASSERT(false);
-				eae6320::Logging::OutputError("Direct3D failed to create a constant buffer with HRESULT %#010x", result);
+				ASSERT(false);
+				Engine::Logging::OutputError("Direct3D failed to create a constant buffer with HRESULT %#010x", result);
 				return false;
 			}
 		}
@@ -70,7 +70,7 @@ namespace eae6320
 					}
 					else
 					{
-						EAE6320_ASSERT(false);
+						ASSERT(false);
 					}
 				}
 			}

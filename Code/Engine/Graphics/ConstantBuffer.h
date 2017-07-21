@@ -6,14 +6,14 @@
 #include "../Asserts/Asserts.h"
 #include "../Logging/Logging.h"
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 	#include <D3D11.h>
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 	#include "../Windows/OpenGl.h"
 	#include "../../External/OpenGlExtensions/OpenGlExtensions.h"
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace ConstantBuffer
 	{
@@ -60,10 +60,10 @@ namespace eae6320
 
 			bool CreateBuffer(void* i_initialData);
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 			ID3D11Buffer* s_constantBuffer = NULL;
 
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 			GLuint s_constantBufferId = 0;
 
 #endif

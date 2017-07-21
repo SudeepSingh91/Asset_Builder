@@ -6,7 +6,7 @@
 #include "../../Logging/Logging.h"
 #include "../Context.h"
 
-ID3D11Buffer* eae6320::Graphics::cSprite::ms_vertexBuffer = NULL;
+ID3D11Buffer* Engine::Graphics::cSprite::ms_vertexBuffer = NULL;
 
 namespace
 {
@@ -14,9 +14,9 @@ namespace
 	Context* myCont = Context::GetContext();
 }
 
-void eae6320::Graphics::cSprite::Draw() const
+void Engine::Graphics::cSprite::Draw() const
 {
-	EAE6320_ASSERT( ms_vertexBuffer != NULL );
+	ASSERT( ms_vertexBuffer != NULL );
 	{
 		void* memoryToWriteTo;
 		{
@@ -28,7 +28,7 @@ void eae6320::Graphics::cSprite::Draw() const
 				const HRESULT result = myCont->s_direct3dImmediateContext->Map( ms_vertexBuffer, noSubResources, mapType, noFlags, &mappedSubResource );
 				if ( FAILED( result ) )
 				{
-					EAE6320_ASSERT( false );
+					ASSERT( false );
 					Logging::OutputError( "Direct3D failed to map the sprite vertex buffer" );
 					return;
 				}
@@ -112,12 +112,12 @@ void eae6320::Graphics::cSprite::Draw() const
 	}
 }
 
-bool eae6320::Graphics::cSprite::Initialize()
+bool Engine::Graphics::cSprite::Initialize()
 {
 	D3D11_BUFFER_DESC bufferDescription = { 0 };
 	{
 		const size_t bufferSize = static_cast<size_t>( s_vertexCount ) * sizeof( VertexFormat::sVertex );
-		EAE6320_ASSERT( bufferSize < ( uint64_t( 1u ) << ( sizeof( bufferDescription.ByteWidth ) * 8 ) ) );
+		ASSERT( bufferSize < ( uint64_t( 1u ) << ( sizeof( bufferDescription.ByteWidth ) * 8 ) ) );
 		bufferDescription.ByteWidth = static_cast<unsigned int>( bufferSize );
 		bufferDescription.Usage = D3D11_USAGE_DYNAMIC;	
 		bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -175,13 +175,13 @@ bool eae6320::Graphics::cSprite::Initialize()
 	}
 	else
 	{
-		EAE6320_ASSERT( false );
-		eae6320::Logging::OutputError( "Direct3D failed to create the vertex buffer for sprites with HRESULT %#010x", result );
+		ASSERT( false );
+		Engine::Logging::OutputError( "Direct3D failed to create the vertex buffer for sprites with HRESULT %#010x", result );
 		return false;
 	}
 }
 
-bool eae6320::Graphics::cSprite::CleanUp()
+bool Engine::Graphics::cSprite::CleanUp()
 {
 	if ( ms_vertexBuffer )
 	{

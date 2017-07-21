@@ -1,7 +1,7 @@
 #ifndef VERTEXFORMAT_H
 #define VERTEXFORMAT_H
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{

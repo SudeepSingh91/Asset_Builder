@@ -1,10 +1,10 @@
-#ifndef EAE6320_MATERIALBUILDER_H
-#define EAE6320_MATERIALBUILDER_H
+#ifndef MATERIALBUILDER_H
+#define MATERIALBUILDER_H
 
 #include "../AssetBuildLibrary/cbBuilder.h"
 #include "../../External/Lua/Includes.h"
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

@@ -10,7 +10,7 @@ namespace
 	HWND s_mainWindow = NULL;
 }
 
-void eae6320::UserOutput::Print( const char* const i_message, ... )
+void Engine::UserOutput::Print( const char* const i_message, ... )
 {
 	std::string message;
 	{
@@ -31,7 +31,7 @@ void eae6320::UserOutput::Print( const char* const i_message, ... )
 			}
 			else
 			{
-				EAE6320_ASSERTF( false, "The internal UserOutput buffer of size %u was not big enough to hold the formatted message of length %i",
+				ASSERTF( false, "The internal UserOutput buffer of size %u was not big enough to hold the formatted message of length %i",
 					bufferSize, formattingResult + 1 );
 				std::ostringstream errorMessage;
 				errorMessage << "FORMATTING ERROR! (The internal user output buffer of size " << bufferSize
@@ -42,7 +42,7 @@ void eae6320::UserOutput::Print( const char* const i_message, ... )
 		}
 		else
 		{
-			EAE6320_ASSERTF( false, "An encoding error occurred in UserOutput for the message \"%s\"", i_message );
+			ASSERTF( false, "An encoding error occurred in UserOutput for the message \"%s\"", i_message );
 			std::ostringstream errorMessage;
 			errorMessage << "ENCODING ERROR! Unformatted message was:\n\t" << i_message;
 			message = errorMessage.str();
@@ -53,14 +53,14 @@ void eae6320::UserOutput::Print( const char* const i_message, ... )
 	MessageBox( s_mainWindow, message.c_str(), caption, MB_OK | MB_ICONINFORMATION );
 }
 
-bool eae6320::UserOutput::Initialize( const sInitializationParameters& i_initializationParameters )
+bool Engine::UserOutput::Initialize( const sInitializationParameters& i_initializationParameters )
 {
 	s_mainWindow = i_initializationParameters.mainWindow;
 
 	return true;
 }
 
-bool eae6320::UserOutput::CleanUp()
+bool Engine::UserOutput::CleanUp()
 {
 	s_mainWindow = NULL;
 

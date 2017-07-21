@@ -1,11 +1,11 @@
-#ifndef EAE6320_BUILDERHELPER_CBBUILDER_H
-#define EAE6320_BUILDERHELPER_CBBUILDER_H
+#ifndef BUILDERHELPER_CBBUILDER_H
+#define BUILDERHELPER_CBBUILDER_H
 
 #include <cstdlib>
 #include <string>
 #include <vector>
 
-namespace eae6320
+namespace Engine
 {
 	namespace AssetBuild
 	{

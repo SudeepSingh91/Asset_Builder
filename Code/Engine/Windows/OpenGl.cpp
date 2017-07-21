@@ -5,10 +5,10 @@
 
 namespace
 {
-	const char* const s_hiddenWindowClass_name = "EAE6320 Hidden OpenGL Context Window Class";
+	const char* const s_hiddenWindowClass_name = "Hidden OpenGL Context Window Class";
 }
 
-bool eae6320::Windows::OpenGl::CreateHiddenContextWindow( HINSTANCE& io_hInstance, sHiddenWindowInfo& o_info, std::string* const o_errorMessage )
+bool Engine::Windows::OpenGl::CreateHiddenContextWindow( HINSTANCE& io_hInstance, sHiddenWindowInfo& o_info, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
 
@@ -56,7 +56,7 @@ bool eae6320::Windows::OpenGl::CreateHiddenContextWindow( HINSTANCE& io_hInstanc
 			}
 		}
 		{
-			const char* const windowName = "EAE6320 Hidden OpenGL Context Window";
+			const char* const windowName = "Hidden OpenGL Context Window";
 			const DWORD windowStyle = WS_POPUP
 				| WS_MINIMIZE;	
 			const DWORD windowStyle_extended = 0;
@@ -173,19 +173,19 @@ OnExit:
 	return !wereThereErrors;
 }
 
-bool eae6320::Windows::OpenGl::FreeHiddenContextWindow( HINSTANCE& i_hInstance, sHiddenWindowInfo& io_info, std::string* const o_errorMessage )
+bool Engine::Windows::OpenGl::FreeHiddenContextWindow( HINSTANCE& i_hInstance, sHiddenWindowInfo& io_info, std::string* const o_errorMessage )
 {
 	bool wereThereErrors = false;
 
 	if ( io_info.openGlRenderingContext != NULL )
 	{
-		EAE6320_ASSERTF( io_info.deviceContext != NULL, "If a rendering context exists then a device context should also" );
+		ASSERTF( io_info.deviceContext != NULL, "If a rendering context exists then a device context should also" );
 		if ( wglGetCurrentContext() == io_info.openGlRenderingContext )
 		{
 			if ( wglMakeCurrent( io_info.deviceContext, NULL ) == FALSE )
 			{
 				wereThereErrors = true;
-				EAE6320_ASSERT( false );
+				ASSERT( false );
 				if ( o_errorMessage )
 				{
 					const std::string windowsError = GetLastSystemError();
@@ -198,7 +198,7 @@ bool eae6320::Windows::OpenGl::FreeHiddenContextWindow( HINSTANCE& i_hInstance, 
 		if ( wglDeleteContext( io_info.openGlRenderingContext ) == FALSE )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			if ( o_errorMessage )
 			{
 				const std::string windowsError = GetLastSystemError();
@@ -218,16 +218,16 @@ bool eae6320::Windows::OpenGl::FreeHiddenContextWindow( HINSTANCE& i_hInstance, 
 		}
 		else
 		{
-			EAE6320_ASSERTF( io_info.window != NULL, "A window handle is required to release a device context" );
+			ASSERTF( io_info.window != NULL, "A window handle is required to release a device context" );
 		}
 	}
 	if ( io_info.window != NULL )
 	{
-		EAE6320_ASSERTF( io_info.windowClass != NULL, "If a window was created then a window class should also be provided" );
+		ASSERTF( io_info.windowClass != NULL, "If a window was created then a window class should also be provided" );
 		if ( DestroyWindow( io_info.window ) == FALSE )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			if ( o_errorMessage )
 			{
 				const std::string windowsErrorMessage = GetLastSystemError();
@@ -240,10 +240,10 @@ bool eae6320::Windows::OpenGl::FreeHiddenContextWindow( HINSTANCE& i_hInstance, 
 	}
 	if ( io_info.windowClass != NULL )
 	{
-		EAE6320_ASSERTF( i_hInstance != NULL, "The provided instance handle is NULL" );
+		ASSERTF( i_hInstance != NULL, "The provided instance handle is NULL" );
 		if ( UnregisterClass( s_hiddenWindowClass_name, i_hInstance ) == FALSE )
 		{
-			EAE6320_ASSERT( false );
+			ASSERT( false );
 			wereThereErrors = true;
 			if ( o_errorMessage )
 			{

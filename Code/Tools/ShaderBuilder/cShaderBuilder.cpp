@@ -2,7 +2,7 @@
 #include <sstream>
 #include "../AssetBuildLibrary/UtilityFunctions.h"
 
-bool eae6320::AssetBuild::cShaderBuilder::Build( const std::vector<std::string>& i_arguments )
+bool Engine::AssetBuild::cShaderBuilder::Build( const std::vector<std::string>& i_arguments )
 {
 	Graphics::ShaderTypes::eShaderType shaderType = Graphics::ShaderTypes::Unknown;
 	{

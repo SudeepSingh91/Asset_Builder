@@ -16,13 +16,13 @@ namespace
 	Context* myCont = Context::GetContext();
 }
 
-void eae6320::Graphics::cTexture::Bind( const unsigned int i_id ) const
+void Engine::Graphics::cTexture::Bind( const unsigned int i_id ) const
 {
 	const unsigned int viewCount = 1;
 	myCont->s_direct3dImmediateContext->PSSetShaderResources( i_id, viewCount, &m_textureView );
 }
 
-bool eae6320::Graphics::cTexture::CleanUp()
+bool Engine::Graphics::cTexture::CleanUp()
 {
 	if ( m_textureView )
 	{
@@ -33,7 +33,7 @@ bool eae6320::Graphics::cTexture::CleanUp()
 	return true;
 }
 
-bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sDdsInfo& i_ddsInfo )
+bool Engine::Graphics::cTexture::Initialize( const char* const i_path, const sDdsInfo& i_ddsInfo )
 {
 	bool wereThereErrors = false;
 
@@ -46,7 +46,7 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 		if ( !subResourceData )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "Failed to allocate %u bytes", byteCountToAllocate );
+			ASSERTF( false, "Failed to allocate %u bytes", byteCountToAllocate );
 			Logging::OutputError( "Failed to allocate %u bytes for %u subresources for %s", byteCountToAllocate, i_ddsInfo.mipLevelCount, i_path );
 			goto OnExit;
 		}
@@ -79,13 +79,13 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 				else
 				{
 					wereThereErrors = true;
-					EAE6320_ASSERTF( false, "DDS file not big enough" );
+					ASSERTF( false, "DDS file not big enough" );
 					Logging::OutputError( "The DDS file %s isn't big enough to hold the data that its header claims to", i_path );
 					goto OnExit;
 				}
 			}
 		}
-		EAE6320_ASSERTF( currentPosition == endOfFile, "The DDS file %s has more data than it should", i_path );
+		ASSERTF( currentPosition == endOfFile, "The DDS file %s has more data than it should", i_path );
 	}
 	DXGI_FORMAT dxgiFormat = DXGI_FORMAT_UNKNOWN;
 	switch ( i_ddsInfo.format )
@@ -115,8 +115,8 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 		if ( FAILED( result ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "CreateTexture2D() failed" );
-			eae6320::Logging::OutputError( "Direct3D failed to create a texture from %s with HRESULT %#010x", i_path, result );
+			ASSERTF( false, "CreateTexture2D() failed" );
+			Engine::Logging::OutputError( "Direct3D failed to create a texture from %s with HRESULT %#010x", i_path, result );
 			goto OnExit;
 		}
 	}
@@ -135,8 +135,8 @@ bool eae6320::Graphics::cTexture::Initialize( const char* const i_path, const sD
 		if ( FAILED( result ) )
 		{
 			wereThereErrors = true;
-			EAE6320_ASSERTF( false, "CreateShaderResourceView() failed" );
-			eae6320::Logging::OutputError( "Direct3D failed to create a shader resource view for %s with HRESULT %#010x", i_path, result );
+			ASSERTF( false, "CreateShaderResourceView() failed" );
+			Engine::Logging::OutputError( "Direct3D failed to create a shader resource view for %s with HRESULT %#010x", i_path, result );
 			goto OnExit;
 		}
 	}

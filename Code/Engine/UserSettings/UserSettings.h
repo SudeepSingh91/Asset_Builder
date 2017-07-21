@@ -1,7 +1,7 @@
-#ifndef EAE6320_USERSETTINGS_H
-#define EAE6320_USERSETTINGS_H
+#ifndef USERSETTINGS_H
+#define USERSETTINGS_H
 
-namespace eae6320
+namespace Engine
 {
 	namespace UserSettings
 	{

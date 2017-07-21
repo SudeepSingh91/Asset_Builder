@@ -1,19 +1,19 @@
-#ifndef EAE6320_GRAPHICS_CSPRITE_H
-#define EAE6320_GRAPHICS_CSPRITE_H
+#ifndef GRAPHICS_CSPRITE_H
+#define GRAPHICS_CSPRITE_H
 
 #include "Configuration.h"
 
 #include <cstdint>
 
-#ifdef EAE6320_PLATFORM_GL
+#ifdef PLATFORM_GL
 	#include "OpenGL/Includes.h"
 #endif
 
-#ifdef EAE6320_PLATFORM_D3D
+#ifdef PLATFORM_D3D
 	struct ID3D11Buffer;
 #endif
 
-namespace eae6320
+namespace Engine
 {
 	namespace Graphics
 	{
@@ -38,9 +38,9 @@ namespace eae6320
 				float left, right, top, bottom;
 			} m_textureCoordinates;
 
-#if defined( EAE6320_PLATFORM_D3D )
+#if defined( PLATFORM_D3D )
 			static ID3D11Buffer* ms_vertexBuffer;
-#elif defined( EAE6320_PLATFORM_GL )
+#elif defined( PLATFORM_GL )
 			static GLuint ms_vertexArrayId;
 			static GLuint ms_vertexBufferId;
 #endif

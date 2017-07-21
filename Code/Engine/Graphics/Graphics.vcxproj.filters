@@ -69,6 +69,7 @@
     <ClCompile Include="cRenderState\cRenderState.cpp">
       <Filter>cRenderState</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenGL\Includes.h">
