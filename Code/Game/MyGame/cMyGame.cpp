@@ -95,9 +95,9 @@ bool Engine::cMyGame::Initialize()
 	(m_meshData + 6)->s_mat = (m_meshMat + 1);
 	(m_meshData + 7)->s_mat = (m_meshMat + 1);
 	graphicsData->SetCamera(*s_Camera);
-	(m_meshData + 2)->s_pos.z((m_meshData + 2)->s_pos.z() - 24.0f);
-	(m_meshData + 6)->s_pos.z((m_meshData + 6)->s_pos.z() - 48.0f);
-	(m_meshData + 7)->s_pos.z((m_meshData + 7)->s_pos.z() - 72.0f);
+	(m_meshData + 2)->s_pos.z((m_meshData + 2)->s_pos.z() - 50.0f);
+	(m_meshData + 6)->s_pos.z((m_meshData + 6)->s_pos.z() - 100.0f);
+	(m_meshData + 7)->s_pos.z((m_meshData + 7)->s_pos.z() - 150.0f);
 	graphicsData->SetMesh(*(m_meshData + 2));
 	(m_meshData + 3)->s_pos.z((m_meshData + 3)->s_pos.z() - 20.0f);
 	(m_meshData + 3)->s_pos.x((m_meshData + 3)->s_pos.x() + 5.0f);
